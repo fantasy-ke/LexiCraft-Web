@@ -1,0 +1,168 @@
+{
+  "id": "ielts",
+  "name": "雅思核心词汇",
+  "description": "包含雅思考试中常见的高频词汇",
+  "count": 20,
+  "words": [
+    {
+      "id": "ielts_1",
+      "word": "phenomenon",
+      "phonetic": "/fəˈnɒmɪnən/",
+      "translation": "现象，奇迹",
+      "example": "Scientists are studying this unusual natural phenomenon.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_2",
+      "word": "sustainable",
+      "phonetic": "/səˈsteɪnəbl/",
+      "translation": "可持续的，可维持的",
+      "example": "We need to develop more sustainable energy sources.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_3",
+      "word": "controversial",
+      "phonetic": "/ˌkɒntrəˈvɜːʃəl/",
+      "translation": "有争议的，引起争论的",
+      "example": "His latest book deals with controversial political issues.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_4",
+      "word": "migration",
+      "phonetic": "/maɪˈɡreɪʃn/",
+      "translation": "迁移，移民",
+      "example": "Birds' annual migration is triggered by changing seasons.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_5",
+      "word": "globalization",
+      "phonetic": "/ˌɡləʊbəlaɪˈzeɪʃn/",
+      "translation": "全球化",
+      "example": "Globalization has increased trade between countries.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_6",
+      "word": "infrastructure",
+      "phonetic": "/ˈɪnfrəstrʌktʃə/",
+      "translation": "基础设施",
+      "example": "The country is investing heavily in transportation infrastructure.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_7",
+      "word": "innovation",
+      "phonetic": "/ˌɪnəˈveɪʃn/",
+      "translation": "创新，革新",
+      "example": "Technological innovation has transformed our daily lives.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_8",
+      "word": "mandatory",
+      "phonetic": "/ˈmændətəri/",
+      "translation": "强制的，法定的",
+      "example": "Wearing a helmet while cycling is mandatory in some countries.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_9",
+      "word": "criteria",
+      "phonetic": "/kraɪˈtɪəriə/",
+      "translation": "标准，条件（criterion的复数）",
+      "example": "The selection criteria for the program are very strict.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_10",
+      "word": "unprecedented",
+      "phonetic": "/ʌnˈpresɪdentɪd/",
+      "translation": "前所未有的，空前的",
+      "example": "The company has achieved unprecedented success this year.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_11",
+      "word": "significant",
+      "phonetic": "/sɪɡˈnɪfɪkənt/",
+      "translation": "重要的，显著的",
+      "example": "There has been a significant increase in online shopping.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_12",
+      "word": "fundamental",
+      "phonetic": "/ˌfʌndəˈmentl/",
+      "translation": "基本的，根本的",
+      "example": "Education is a fundamental right for all children.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_13",
+      "word": "priority",
+      "phonetic": "/praɪˈɒrəti/",
+      "translation": "优先事项，重点",
+      "example": "Safety is our top priority in all operations.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_14",
+      "word": "consequence",
+      "phonetic": "/ˈkɒnsɪkwəns/",
+      "translation": "结果，后果",
+      "example": "His actions had serious consequences for everyone involved.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_15",
+      "word": "methodology",
+      "phonetic": "/ˌmeθəˈdɒlədʒi/",
+      "translation": "方法论，研究方法",
+      "example": "The scientists developed a new methodology for analyzing the data.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_16",
+      "word": "integrate",
+      "phonetic": "/ˈɪntɪɡreɪt/",
+      "translation": "使一体化，融合",
+      "example": "The software is designed to integrate with existing systems.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_17",
+      "word": "substantial",
+      "phonetic": "/səbˈstænʃl/",
+      "translation": "实质的，大量的",
+      "example": "The project requires a substantial investment of time and money.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_18",
+      "word": "perspective",
+      "phonetic": "/pəˈspektɪv/",
+      "translation": "观点，看法",
+      "example": "It's important to consider the issue from different perspectives.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_19",
+      "word": "implementation",
+      "phonetic": "/ˌɪmplɪmenˈteɪʃn/",
+      "translation": "实施，执行",
+      "example": "The implementation of the new policy will begin next month.",
+      "mastered": false
+    },
+    {
+      "id": "ielts_20",
+      "word": "diversification",
+      "phonetic": "/daɪˌvɜːsɪfɪˈkeɪʃn/",
+      "translation": "多样化，多元化",
+      "example": "Diversification of investments can reduce financial risk.",
+      "mastered": false
+    }
+  ]
+} 

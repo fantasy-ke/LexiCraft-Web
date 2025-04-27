@@ -1,0 +1,168 @@
+{
+  "id": "cet4",
+  "name": "大学英语四级词汇",
+  "description": "包含大学英语四级考试中常见的核心词汇",
+  "count": 20,
+  "words": [
+    {
+      "id": "cet4_1",
+      "word": "abandon",
+      "phonetic": "/əˈbændən/",
+      "translation": "放弃，抛弃",
+      "example": "She would never abandon her children.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_2",
+      "word": "ability",
+      "phonetic": "/əˈbɪləti/",
+      "translation": "能力，才能",
+      "example": "He has the ability to explain difficult concepts clearly.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_3",
+      "word": "abroad",
+      "phonetic": "/əˈbrɔːd/",
+      "translation": "国外，海外",
+      "example": "She's been living abroad for five years now.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_4",
+      "word": "absent",
+      "phonetic": "/ˈæbsənt/",
+      "translation": "缺席的，不在场的",
+      "example": "He was absent from school yesterday because he was sick.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_5",
+      "word": "absolute",
+      "phonetic": "/ˈæbsəluːt/",
+      "translation": "绝对的，完全的",
+      "example": "I have absolute confidence in his ability.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_6",
+      "word": "absorb",
+      "phonetic": "/əbˈzɔːrb/",
+      "translation": "吸收，吸引",
+      "example": "Plants absorb carbon dioxide from the air.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_7",
+      "word": "abstract",
+      "phonetic": "/ˈæbstrækt/",
+      "translation": "抽象的，理论上的",
+      "example": "The painting is quite abstract and open to interpretation.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_8",
+      "word": "academic",
+      "phonetic": "/ˌækəˈdemɪk/",
+      "translation": "学术的，学院的",
+      "example": "She has pursued an academic career in psychology.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_9",
+      "word": "accelerate",
+      "phonetic": "/əkˈseləreɪt/",
+      "translation": "加速，促进",
+      "example": "The car began to accelerate as it went downhill.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_10",
+      "word": "accept",
+      "phonetic": "/əkˈsept/",
+      "translation": "接受，承认",
+      "example": "I gratefully accept your offer of help.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_11",
+      "word": "access",
+      "phonetic": "/ˈækses/",
+      "translation": "进入，使用权",
+      "example": "Students have access to the university library.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_12",
+      "word": "accident",
+      "phonetic": "/ˈæksɪdənt/",
+      "translation": "事故，意外",
+      "example": "He was involved in a car accident last month.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_13",
+      "word": "accommodate",
+      "phonetic": "/əˈkɒmədeɪt/",
+      "translation": "容纳，提供住宿",
+      "example": "The hotel can accommodate up to 500 guests.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_14",
+      "word": "accompany",
+      "phonetic": "/əˈkʌmpəni/",
+      "translation": "陪伴，伴随",
+      "example": "I'll accompany you to the doctor's office.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_15",
+      "word": "accomplish",
+      "phonetic": "/əˈkʌmplɪʃ/",
+      "translation": "完成，实现",
+      "example": "She has accomplished all the goals she set for herself.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_16",
+      "word": "account",
+      "phonetic": "/əˈkaʊnt/",
+      "translation": "账户，说明",
+      "example": "I need to check my bank account balance.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_17",
+      "word": "accurate",
+      "phonetic": "/ˈækjərət/",
+      "translation": "准确的，精确的",
+      "example": "Please provide accurate information on the form.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_18",
+      "word": "achieve",
+      "phonetic": "/əˈtʃiːv/",
+      "translation": "达到，实现",
+      "example": "She worked hard to achieve her goals.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_19",
+      "word": "acknowledge",
+      "phonetic": "/əkˈnɒlɪdʒ/",
+      "translation": "承认，确认",
+      "example": "He acknowledged that he had made a mistake.",
+      "mastered": false
+    },
+    {
+      "id": "cet4_20",
+      "word": "acquire",
+      "phonetic": "/əˈkwaɪər/",
+      "translation": "获得，取得",
+      "example": "She acquired the skill through years of practice.",
+      "mastered": false
+    }
+  ]
+} 
