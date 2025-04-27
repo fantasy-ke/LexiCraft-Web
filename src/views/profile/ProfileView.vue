@@ -120,13 +120,13 @@
                 <a-progress
                   :percent="(typingProgress.masteredWords / typingProgress.totalWords) * 100"
                   status="active"
-                  :format="percent => `拼写模式: ${typingProgress.masteredWords}/${typingProgress.totalWords}`"
+                  :format="() => `拼写模式: ${typingProgress.masteredWords}/${typingProgress.totalWords}`"
                   style="margin-bottom: 16px"
                 />
                 <a-progress
                   :percent="(connectProgress.masteredWords / connectProgress.totalWords) * 100"
                   status="active"
-                  :format="percent => `连连看模式: ${connectProgress.masteredWords}/${connectProgress.totalWords}`"
+                  :format="() => `连连看模式: ${connectProgress.masteredWords}/${connectProgress.totalWords}`"
                 />
               </a-card>
             </a-tab-pane>
@@ -245,7 +245,7 @@ const wordStudyStore = useWordStudyStore();
 const userInfo = computed(() => userStore.getUserInfo);
 
 // 学习进度
-const typingProgress = computed(() => wordStudyStore.getTypingProgress);
+const typingProgress = computed(() => wordStudyStore.getSpellingProgress);
 const connectProgress = computed(() => wordStudyStore.getConnectProgress);
 
 // 总学习时间
@@ -394,7 +394,9 @@ const handleWordlistChange = async (info: any) => {
           const wordList = await uploadWordList(content);
           
           // 更新词库列表
-          wordStudyStore.addWordList(wordList);
+          const currentLists = [...wordLists.value];
+          currentLists.push(wordList);
+          wordStudyStore.updateWordList(currentLists);
           
           message.success('词库上传成功');
         } catch (error) {
