@@ -36,7 +36,7 @@
         <div class="word-display" v-if="currentWord">
           <div class="word-content">
             <h2 class="word-text">{{ currentWord.word }}</h2>
-            <p class="word-phonetic" v-if="settings.showPhonetic">{{ currentWord.phonetic }}</p>
+            <p class="word-phonetic" v-if="settings.showPhonetic">{{ currentWord.pronunciation }}</p>
             <p class="word-translation" v-if="settings.showTranslation">{{ currentWord.translation }}</p>
           </div>
 
@@ -74,15 +74,15 @@
       </div>
     </div>
     
-    <footer-component study-mode="typing" />
+    <footer-component study-mode="spelling" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, computed, onMounted, nextTick } from 'vue';
+import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { message } from 'ant-design-vue';
 import { SoundOutlined, ReadOutlined, TranslationOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
-import { useWordStudyStore, type Word } from '@/store/wordStudy';
+import { useWordStudyStore, type Word, WORD_LIST_CHANGED_EVENT } from '@/store/wordStudy';
 import { fetchWordLists, getWordPronunciation } from '@/api/wordlist';
 import HeaderComponent from '@/components/common/HeaderComponent.vue';
 import FooterComponent from '@/components/common/FooterComponent.vue';
@@ -140,7 +140,7 @@ const prevWord = () => {
   if (currentWordIndex.value > 0) {
     currentWordIndex.value--;
     nextTick(() => {
-      wordInputRef.value?.resetInput();
+      (wordInputRef.value as any)?.resetInput();
       if (settings.value.playPronunciation) {
         setTimeout(playPronunciation, 300);
       }
@@ -153,7 +153,7 @@ const nextWord = () => {
   if (currentWordIndex.value < wordList.value.length - 1) {
     currentWordIndex.value++;
     nextTick(() => {
-      wordInputRef.value?.resetInput();
+      (wordInputRef.value as any)?.resetInput();
       if (settings.value.playPronunciation) {
         setTimeout(playPronunciation, 300);
       }
@@ -175,11 +175,11 @@ const handleIncorrectLetter = (index: number) => {
 const handleWordComplete = async (word: string) => {
   if (currentWord.value) {
     // 标记单词为已掌握
-    wordStudyStore.markWordAsMastered(currentWord.value.id, 'typing');
+    wordStudyStore.markWordAsMastered(currentWord.value.id, 'spelling');
     
     // 更新统计数据
     const totalWords = wordList.value.length;
-    const masteredWords = wordStudyStore.getTypingProgress.masteredWords;
+    const masteredWords = wordStudyStore.getSpellingProgress.masteredWords;
     const endTime = Date.now();
     studyTime.value += Math.floor((endTime - startTime.value) / 1000);
     
@@ -188,7 +188,7 @@ const handleWordComplete = async (word: string) => {
     const accuracy = Math.round((word.length / totalTyped) * 100);
     
     // 更新进度
-    wordStudyStore.updateTypingProgress({
+    wordStudyStore.updateSpellingProgress({
       totalWords,
       masteredWords,
       accuracy,
@@ -213,37 +213,68 @@ const handleWordComplete = async (word: string) => {
   }
 };
 
-// 初始化数据
-const initData = async () => {
-  try {
-    // 获取词库列表
-    const wordLists = await fetchWordLists();
-    wordStudyStore.updateWordList(wordLists);
-    
-    // 如果没有设置当前词库，设置第一个词库为当前词库
-    if (!wordStudyStore.getCurrentWordList && wordLists.length > 0) {
-      wordStudyStore.setCurrentWordList(wordLists[0]);
+// 加载单词列表
+const loadWordList = async () => {
+  // 重置数据
+  currentWordIndex.value = 0;
+  errorCount.value = 0;
+  startTime.value = Date.now();
+  
+  // 获取当前词库
+  if (!wordStudyStore.getCurrentWordList) {
+    try {
+      const wordLists = await fetchWordLists();
+      wordStudyStore.updateWordList(wordLists);
+      
+      if (wordLists.length > 0) {
+        wordStudyStore.setCurrentWordList(wordLists[0]);
+      }
+    } catch (error) {
+      message.error('获取词库失败，请重试');
+      return;
     }
+  }
+  
+  if (wordStudyStore.getCurrentWordList) {
+    wordList.value = [...wordStudyStore.getCurrentWordList.words];
     
-    // 设置单词列表
-    if (wordStudyStore.getCurrentWordList) {
-      wordList.value = wordStudyStore.getCurrentWordList.words;
-      wordStudyStore.updateTypingProgress({
-        totalWords: wordList.value.length
-      });
-    }
-    
-    // 自动播放首个单词发音
-    if (settings.value.playPronunciation && currentWord.value) {
-      setTimeout(playPronunciation, 500);
-    }
-  } catch (error) {
-    message.error('获取词库失败，请重试');
+    // 自动播放第一个单词发音
+    nextTick(() => {
+      if (settings.value.playPronunciation && currentWord.value) {
+        setTimeout(playPronunciation, 300);
+      }
+    });
   }
 };
 
-onMounted(() => {
-  initData();
+// 处理词库变更
+const handleWordListChanged = (newWordList: any) => {
+  if (newWordList && newWordList.name) {
+    message.info(`词库已切换到: ${newWordList.name}`);
+    loadWordList();
+  }
+};
+
+// 初始化
+onMounted(async () => {
+  try {
+    await loadWordList();
+    
+    // 监听词库变更事件
+    wordStudyStore.addEventListener(WORD_LIST_CHANGED_EVENT, handleWordListChanged);
+  } catch (error) {
+    console.error("初始化失败:", error);
+  }
+});
+
+// 清理
+onUnmounted(() => {
+  try {
+    // 移除事件监听
+    wordStudyStore.removeEventListener(WORD_LIST_CHANGED_EVENT, handleWordListChanged);
+  } catch (error) {
+    console.error("清理失败:", error);
+  }
 });
 </script>
 
@@ -254,21 +285,41 @@ onMounted(() => {
   padding: 20px;
   
   .content {
-    min-height: calc(100vh - 220px);
+    min-height: calc(100vh - 420px);
     
     .word-study-container {
       background-color: white;
       border-radius: 16px;
       padding: 32px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 600px;
       
       .word-settings {
         display: flex;
         justify-content: center;
+        align-items: center;
         margin-bottom: 24px;
+        
+        .ant-btn-group {
+          display: flex;
+          align-items: center;
+        }
         
         .ant-btn {
           padding: 8px 16px;
+          display: flex;
+          align-items: center;
+          height: auto;
+          
+          .anticon {
+            margin-right: 6px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+          }
           
           &.active {
             color: #1890ff;
@@ -341,6 +392,18 @@ onMounted(() => {
         display: flex;
         justify-content: center;
         gap: 16px;
+        margin-top: 32px;
+        
+        .ant-btn {
+          display: flex;
+          align-items: center;
+          
+          .anticon {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+          }
+        }
       }
     }
   }

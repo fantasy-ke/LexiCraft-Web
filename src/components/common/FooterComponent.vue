@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="progress-section" v-if="isLoggedIn && showProgress">
       <div class="progress-item">
-        <h3>{{ studyMode === 'typing' ? '拼写模式' : '连连看模式' }}</h3>
+        <h3>{{ studyMode === 'spelling' ? '拼写模式' : '连连看模式' }}</h3>
         <div class="progress-bar">
           <div
             class="progress-filled"
@@ -55,8 +55,8 @@ export default defineComponent({
   },
   props: {
     studyMode: {
-      type: String as () => 'typing' | 'connect',
-      default: 'typing'
+      type: String as () => 'spelling' | 'connect',
+      default: 'spelling'
     }
   },
   setup(props) {
@@ -70,8 +70,8 @@ export default defineComponent({
     });
 
     const progress = computed(() => {
-      return props.studyMode === 'typing' 
-        ? wordStudyStore.getTypingProgress 
+      return props.studyMode === 'spelling' 
+        ? wordStudyStore.getSpellingProgress 
         : wordStudyStore.getConnectProgress;
     });
 

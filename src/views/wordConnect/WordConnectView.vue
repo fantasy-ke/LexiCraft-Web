@@ -119,7 +119,7 @@
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { message } from 'ant-design-vue';
 import { ReloadOutlined, ForwardOutlined } from '@ant-design/icons-vue';
-import { useWordStudyStore, type Word } from '@/store/wordStudy';
+import { useWordStudyStore, type Word, WORD_LIST_CHANGED_EVENT } from '@/store/wordStudy';
 import { fetchWordLists } from '@/api/wordlist';
 import HeaderComponent from '@/components/common/HeaderComponent.vue';
 import FooterComponent from '@/components/common/FooterComponent.vue';
@@ -409,6 +409,15 @@ const loadNewWords = async (excludeLearned: boolean) => {
 // 初始化游戏
 const initGame = () => {
   resetGame();
+  
+  // 监听词库变更事件
+  wordStudyStore.addEventListener(WORD_LIST_CHANGED_EVENT, handleWordListChanged);
+};
+
+// 处理词库变更
+const handleWordListChanged = (newWordList: any) => {
+  message.info(`词库已切换到: ${newWordList.name}`);
+  resetGame();
 };
 
 onMounted(() => {
@@ -419,6 +428,9 @@ onUnmounted(() => {
   if (gameTimer.value) {
     clearInterval(gameTimer.value);
   }
+  
+  // 移除事件监听
+  wordStudyStore.removeEventListener(WORD_LIST_CHANGED_EVENT, handleWordListChanged);
 });
 </script>
 
