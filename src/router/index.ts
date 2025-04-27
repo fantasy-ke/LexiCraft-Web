@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/home'
   },
   {
     path: '/login',
@@ -21,13 +21,13 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: () => import('../views/home/HomeView.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: false }
   },
   {
     path: '/connect',
     name: 'WordConnect',
     component: () => import('../views/wordConnect/WordConnectView.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: false }
   },
   {
     path: '/profile',
@@ -46,14 +46,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('token') !== null;
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  next();
-  // if (requiresAuth && !isAuthenticated) {
-  //   next('/login');
-  // } else if (!requiresAuth && isAuthenticated && (to.path === '/login' || to.path === '/register')) {
-  //   next('/home');
-  // } else {
-  //   next();
-  // }
+  
+  if (requiresAuth && !isAuthenticated) {
+    next('/login');
+  } else {
+    next();
+  }
 });
 
 export default router; 
