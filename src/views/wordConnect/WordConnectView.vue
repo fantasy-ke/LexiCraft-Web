@@ -112,10 +112,10 @@
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { message } from 'ant-design-vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
-import { useWordStudyStore, type Word } from '../../store/wordStudy';
-import { fetchWordLists } from '../../api/wordlist';
-import HeaderComponent from '../../components/common/HeaderComponent.vue';
-import FooterComponent from '../../components/common/FooterComponent.vue';
+import { useWordStudyStore, type Word } from '@/store/wordStudy';
+import { fetchWordLists } from '@/api/wordlist';
+import HeaderComponent from '@/components/common/HeaderComponent.vue';
+import FooterComponent from '@/components/common/FooterComponent.vue';
 
 interface Connection {
   wordIndex: number;

@@ -106,8 +106,8 @@ import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import { UserOutlined, LockOutlined, GithubOutlined, GitlabOutlined } from '@ant-design/icons-vue';
-import { login, githubLogin, giteeLogin } from '../../api/user';
-import { useUserStore } from '../../store/user';
+import { login, githubLogin, giteeLogin } from '@/api/user';
+import { useUserStore } from '@/store/user';
 
 const router = useRouter();
 const userStore = useUserStore();

@@ -82,11 +82,11 @@
 import { ref, reactive, computed, onMounted, nextTick } from 'vue';
 import { message } from 'ant-design-vue';
 import { SoundOutlined, ReadOutlined, TranslationOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
-import { useWordStudyStore, type Word } from '../../store/wordStudy';
-import { fetchWordLists, getWordPronunciation } from '../../api/wordlist';
-import HeaderComponent from '../../components/common/HeaderComponent.vue';
-import FooterComponent from '../../components/common/FooterComponent.vue';
-import WordInput from '../../components/common/WordInput.vue';
+import { useWordStudyStore, type Word } from '@/store/wordStudy';
+import { fetchWordLists, getWordPronunciation } from '@/api/wordlist';
+import HeaderComponent from '@/components/common/HeaderComponent.vue';
+import FooterComponent from '@/components/common/FooterComponent.vue';
+import WordInput from '@/components/common/WordInput.vue';
 
 const wordStudyStore = useWordStudyStore();
 const wordInputRef = ref<InstanceType<typeof WordInput> | null>(null);

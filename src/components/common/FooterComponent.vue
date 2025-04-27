@@ -43,8 +43,8 @@
 import { computed, defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import { GithubOutlined, TwitterOutlined, FacebookOutlined } from '@ant-design/icons-vue';
-import { useUserStore } from '../../store/user';
-import { useWordStudyStore } from '../../store/wordStudy';
+import { useUserStore } from '@/store/user';
+import { useWordStudyStore } from '@/store/wordStudy';
 
 export default defineComponent({
   name: 'FooterComponent',

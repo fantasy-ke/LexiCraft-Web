@@ -44,8 +44,8 @@
 import { computed, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { DownOutlined } from '@ant-design/icons-vue';
-import { useUserStore } from '../../store/user';
-import { useWordStudyStore, type WordList } from '../../store/wordStudy';
+import { useUserStore } from '@/store/user';
+import { useWordStudyStore, type WordList } from '@/store/wordStudy';
 
 export default defineComponent({
   name: 'HeaderComponent',

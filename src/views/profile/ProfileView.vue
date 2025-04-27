@@ -230,12 +230,12 @@ import {
   WechatOutlined,
   QqOutlined
 } from '@ant-design/icons-vue';
-import { useUserStore } from '../../store/user';
-import { useWordStudyStore, type WordList } from '../../store/wordStudy';
-import { updateUserInfo } from '../../api/user';
-import { fetchWordLists, uploadWordList } from '../../api/wordlist';
-import HeaderComponent from '../../components/common/HeaderComponent.vue';
-import FooterComponent from '../../components/common/FooterComponent.vue';
+import { useUserStore } from '@/store/user';
+import { useWordStudyStore, type WordList } from '@/store/wordStudy';
+import { updateUserInfo } from '@/api/user';
+import { fetchWordLists, uploadWordList } from '@/api/wordlist';
+import HeaderComponent from '@/components/common/HeaderComponent.vue';
+import FooterComponent from '@/components/common/FooterComponent.vue';
 
 const router = useRouter();
 const userStore = useUserStore();

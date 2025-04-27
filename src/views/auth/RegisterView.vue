@@ -93,8 +93,8 @@ import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import { UserOutlined, MailOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons-vue';
-import { register } from '../../api/user';
-import { useUserStore } from '../../store/user';
+import { register } from '@/api/user';
+import { useUserStore } from '@/store/user';
 
 const router = useRouter();
 const userStore = useUserStore();
