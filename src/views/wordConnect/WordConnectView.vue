@@ -4,21 +4,28 @@
     
     <div class="content">
       <div class="connect-header">
-        <a-select 
-          v-model="wordCount" 
-          style="width: 200px" 
-          @change="handleCountChange"
-        >
-          <a-select-option :value="5">5 组单词</a-select-option>
-          <a-select-option :value="10">10 组单词</a-select-option>
-          <a-select-option :value="15">15 组单词</a-select-option>
-          <a-select-option :value="20">20 组单词</a-select-option>
-        </a-select>
-        
-        <a-button type="primary" @click="resetGame">
+        <div class="header-left">
+          <a-select 
+            v-model:value="wordCount" 
+            style="width: 200px" 
+            @change="handleCountChange"
+          >
+            <a-select-option :value="5">5 组单词</a-select-option>
+            <a-select-option :value="10">10 组单词</a-select-option>
+            <a-select-option :value="15">15 组单词</a-select-option>
+            <a-select-option :value="20">20 组单词</a-select-option>
+          </a-select>
+          <a-button @click="resetGame" class="action-button">
           <template #icon><reload-outlined /></template>
           重新开始
         </a-button>
+          
+        </div>
+        <a-button type="primary" @click="nextRound" class="action-button">
+            <template #icon><forward-outlined /></template>
+            下一轮
+          </a-button>
+        
       </div>
       
       <div class="connect-game" ref="gameContainer">
@@ -74,7 +81,7 @@
         <div class="connect-progress">
           <a-progress 
             :percent="progressPercent" 
-            :format="percent => `${correctPairs}/${totalPairs}`"
+            :format="() => `${correctPairs}/${totalPairs}`"
             status="active"
           />
         </div>
@@ -111,7 +118,7 @@
 <script lang="ts" setup>
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { message } from 'ant-design-vue';
-import { ReloadOutlined } from '@ant-design/icons-vue';
+import { ReloadOutlined, ForwardOutlined } from '@ant-design/icons-vue';
 import { useWordStudyStore, type Word } from '@/store/wordStudy';
 import { fetchWordLists } from '@/api/wordlist';
 import HeaderComponent from '@/components/common/HeaderComponent.vue';
@@ -137,8 +144,9 @@ const gameContainer = ref<HTMLElement | null>(null);
 const linesContainer = ref<SVGElement | null>(null);
 
 // 游戏设置
-const wordCount = ref(10);
+const wordCount = ref(5);
 const wordStudyStore = useWordStudyStore();
+const learnedWordIds = ref<string[]>([]);
 
 // 游戏状态
 const shuffledWords = ref<Word[]>([]);
@@ -161,7 +169,9 @@ const progressPercent = computed(() => {
 });
 
 // 处理连接数量变化
-const handleCountChange = () => {
+const handleCountChange = (value: number) => {
+  console.log('切换单词数量:', value);
+  wordCount.value = value;
   resetGame();
 };
 
@@ -214,6 +224,7 @@ const tryConnect = () => {
     const translationRect = translationElements[translationIndex].getBoundingClientRect();
     const containerRect = gameContainer.value!.getBoundingClientRect();
     
+    // 计算连接线在容器中的相对位置
     const x1 = wordRect.right - containerRect.left;
     const y1 = wordRect.top + wordRect.height / 2 - containerRect.top;
     const x2 = translationRect.left - containerRect.left;
@@ -295,8 +306,31 @@ const gameComplete = () => {
   updateProgress();
 };
 
-// 重置游戏
+// 下一轮，不显示已学习过的单词
+const nextRound = async () => {
+  // 保存当前已连接的单词ID
+  const newLearnedIds = [...learnedWordIds.value];
+  connectedWords.value.forEach(index => {
+    const wordId = shuffledWords.value[index].id;
+    if (!newLearnedIds.includes(wordId)) {
+      newLearnedIds.push(wordId);
+    }
+  });
+  learnedWordIds.value = newLearnedIds;
+  
+  // 重置游戏状态但保留学习记录
+  await loadNewWords(true);
+};
+
+// 重置游戏，可以重新学习所有单词
 const resetGame = async () => {
+  // 重置所有状态，包括学习记录
+  learnedWordIds.value = [];
+  await loadNewWords(false);
+};
+
+// 加载新单词
+const loadNewWords = async (excludeLearned: boolean) => {
   // 重置状态
   selectedWordIndex.value = null;
   selectedTranslationIndex.value = null;
@@ -335,9 +369,25 @@ const resetGame = async () => {
     // 获取词库单词
     let availableWords = [...wordStudyStore.getCurrentWordList.words];
     
+    // 过滤掉已学习的单词
+    if (excludeLearned && learnedWordIds.value.length > 0) {
+      availableWords = availableWords.filter(word => !learnedWordIds.value.includes(word.id));
+      
+      if (availableWords.length === 0) {
+        message.success('恭喜！您已学习完所有单词');
+        learnedWordIds.value = []; // 重置已学习记录
+        availableWords = [...wordStudyStore.getCurrentWordList.words]; // 重新加载所有单词
+      }
+    }
+    
     // 根据设置的数量限制单词数
     if (availableWords.length > wordCount.value) {
       availableWords = availableWords.slice(0, wordCount.value);
+    } else {
+      // 如果词库单词不足，提示用户
+      if (availableWords.length < wordCount.value) {
+        message.info(`当前词库只有 ${availableWords.length} 组单词可用`);
+      }
     }
     
     totalPairs.value = availableWords.length;
@@ -390,6 +440,27 @@ onUnmounted(() => {
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      
+      .action-button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 0 16px;
+        height: 32px;
+        border-radius: 6px;
+        transition: all 0.3s;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+      }
     }
     
     .connect-game {
@@ -401,19 +472,23 @@ onUnmounted(() => {
         display: flex;
         position: relative;
         min-height: 400px;
+        justify-content: space-between;
         
         .word-column {
-          width: 40%;
+          width: 35%;
           display: flex;
           flex-direction: column;
           gap: 16px;
+          justify-content: center;
           
           &-left {
             align-items: flex-end;
+            padding-right: 30px;
           }
           
           &-right {
             align-items: flex-start;
+            padding-left: 30px;
           }
           
           .word-item,
@@ -424,6 +499,9 @@ onUnmounted(() => {
             cursor: pointer;
             transition: all 0.3s;
             user-select: none;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             
             &:hover {
               background-color: #e6f7ff;
@@ -449,11 +527,14 @@ onUnmounted(() => {
           height: 100%;
           pointer-events: none;
           z-index: 1;
+          flex-grow: 1;
           
           svg {
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
             
             line {
               stroke: #1890ff;
@@ -462,6 +543,7 @@ onUnmounted(() => {
               
               &.correct-line {
                 stroke: #52c41a;
+                stroke-width: 3;
               }
               
               &.incorrect-line {
