@@ -166,7 +166,7 @@ export default defineComponent({
 .word-input-container {
   display: flex;
   justify-content: center;
-  margin: 24px 0;
+  margin: 18px 0;
 
   .letter-inputs {
     display: flex;

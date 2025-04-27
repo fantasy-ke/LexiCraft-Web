@@ -36,12 +36,18 @@
         <div class="word-display" v-if="currentWord">
           <div class="word-content">
             <h2 class="word-text">{{ currentWord.word }}</h2>
-            <p class="word-phonetic" v-if="settings.showPhonetic">{{ currentWord.pronunciation }}</p>
+            <div class="pronunciation-container">
+              <template v-if="settings.showPhonetic">
+                <div class="word-phonetic">{{ currentWord.pronunciation }}</div>
+                <div class="sound-button" @click="playPronunciation">
+                  <sound-outlined />
+                </div>
+              </template>
+              <div v-else class="sound-button-solo" @click="playPronunciation">
+                <sound-outlined />
+              </div>
+            </div>
             <p class="word-translation" v-if="settings.showTranslation">{{ currentWord.translation }}</p>
-          </div>
-
-          <div class="sound-button" @click="playPronunciation">
-            <sound-outlined />
           </div>
         </div>
 
@@ -332,7 +338,7 @@ onUnmounted(() => {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 32px;
+        margin-bottom: 20px;
         
         .word-content {
           text-align: center;
@@ -344,33 +350,51 @@ onUnmounted(() => {
             color: #262626;
           }
           
-          .word-phonetic {
-            font-size: 16px;
-            color: #8c8c8c;
+          .pronunciation-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 8px;
+            min-height: 24px;
+            
+            .word-phonetic {
+              font-size: 16px;
+              color: #8c8c8c;
+              margin-right: 10px;
+            }
+            
+            .sound-button, .sound-button-solo {
+              font-size: 18px;
+              color: #1890ff;
+              cursor: pointer;
+              width: 24px;
+              height: 24px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              transition: all 0.3s;
+              
+              .anticon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+              
+              &:hover {
+                background-color: #e6f7ff;
+                transform: scale(1.1);
+              }
+            }
+            
+            .sound-button-solo {
+              margin: 0 auto;
+            }
           }
           
           .word-translation {
             font-size: 18px;
             color: #595959;
-          }
-        }
-        
-        .sound-button {
-          margin-left: 20px;
-          font-size: 24px;
-          color: #1890ff;
-          cursor: pointer;
-          width: 48px;
-          height: 48px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 50%;
-          transition: all 0.3s;
-          
-          &:hover {
-            background-color: #e6f7ff;
           }
         }
       }
