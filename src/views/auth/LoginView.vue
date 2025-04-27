@@ -14,13 +14,14 @@
             @finish="handleLogin"
             layout="vertical"
             class="login-form"
+            ref="formRef"
           >
             <a-form-item
               name="username"
               :rules="[{ required: true, message: '请输入用户名' }]"
             >
               <a-input 
-                v-model="loginForm.username" 
+                v-model:value="loginForm.username" 
                 placeholder="用户名" 
                 size="large"
               >
@@ -35,7 +36,7 @@
               :rules="[{ required: true, message: '请输入密码' }]"
             >
               <a-input-password 
-                v-model="loginForm.password" 
+                v-model:value="loginForm.password" 
                 placeholder="密码" 
                 size="large"
               >
@@ -47,7 +48,7 @@
 
             <a-form-item>
               <div class="login-options">
-                <a-checkbox v-model="loginForm.remember">记住我</a-checkbox>
+                <a-checkbox v-model:checked="loginForm.remember">记住我</a-checkbox>
                 <a class="forgot-link">忘记密码？</a>
               </div>
             </a-form-item>
@@ -110,6 +111,7 @@ import { useUserStore } from '../../store/user';
 
 const router = useRouter();
 const userStore = useUserStore();
+const formRef = ref();
 
 const loginForm = reactive({
   username: '',
