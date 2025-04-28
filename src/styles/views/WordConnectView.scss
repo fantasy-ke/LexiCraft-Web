@@ -1,0 +1,191 @@
+.connect-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  
+  .content {
+    background-color: var(--card-background);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 20px;
+    
+    .connect-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      
+      .action-button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 0 16px;
+        height: 32px;
+        border-radius: 6px;
+        transition: all 0.3s;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+    
+    .connect-game {
+      position: relative;
+      min-height: 400px;
+      margin-bottom: 24px;
+      
+      .word-columns {
+        display: flex;
+        position: relative;
+        min-height: 400px;
+        justify-content: space-between;
+        
+        .word-column {
+          width: 35%;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          justify-content: center;
+          
+          &-left {
+            align-items: flex-end;
+            padding-right: 30px;
+          }
+          
+          &-right {
+            align-items: flex-start;
+            padding-left: 30px;
+          }
+          
+          .word-item,
+          .translation-item {
+            padding: 12px 16px;
+            background-color: var(--background-color-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            color: var(--text-color);
+            
+            &:hover {
+              background-color: var(--background-color);
+              box-shadow: 0 2px 8px rgba(24, 144, 255, 0.2);
+            }
+            
+            &.selected {
+              background-color: var(--primary-color);
+              color: var(--text-color);
+            }
+            
+            &.connected {
+              background-color: var(--success-color);
+              color: var(--text-color);
+              cursor: default;
+            }
+          }
+        }
+        
+        .connect-lines {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 1;
+          flex-grow: 1;
+          
+          svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            line {
+              stroke: var(--primary-color);
+              stroke-dasharray: 5;
+              animation: dash 20s linear infinite;
+              
+              &.correct-line {
+                stroke: var(--success-color);
+                stroke-width: 3;
+              }
+              
+              &.incorrect-line {
+                stroke: var(--error-color);
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    .connect-status {
+      margin-bottom: 24px;
+      
+      .connect-progress {
+        margin-bottom: 16px;
+      }
+      
+      .connect-stats {
+        display: flex;
+        justify-content: space-between;
+        
+        .stat-item {
+          .stat-label {
+            color: var(--text-color-secondary);
+          }
+          
+          .stat-value {
+            font-weight: bold;
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+    
+    .connect-pairs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      
+      .pair-item {
+        padding: 8px 12px;
+        background-color: var(--success-color-light);
+        border-radius: 4px;
+        border: 1px solid var(--success-color);
+        font-size: 14px;
+        
+        .pair-word {
+          font-weight: bold;
+        }
+        
+        .pair-divider {
+          color: var(--text-color-secondary);
+          margin: 0 4px;
+        }
+        
+        .pair-translation {
+          color: var(--success-color-dark);
+        }
+      }
+    }
+  }
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 1000;
+  }
+} 

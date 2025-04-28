@@ -1,0 +1,70 @@
+.footer {
+  background-color: var(--card-background);
+  padding: 24px;
+  margin-top: 24px;
+  border-radius: 16px;
+  box-shadow: var(--box-shadow);
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .logo-image {
+        width: 32px;
+        height: 32px;
+      }
+
+      h2 {
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin: 0;
+      }
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+
+      a {
+        color: var(--text-color);
+        text-decoration: none;
+        transition: color 0.3s;
+
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+    }
+
+    .social-links {
+      display: flex;
+      gap: 16px;
+
+      a {
+        color: var(--text-color-secondary);
+        font-size: 20px;
+        transition: color 0.3s;
+
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+    }
+  }
+
+  .copyright {
+    text-align: center;
+    margin-top: 24px;
+    color: var(--text-color-secondary);
+    font-size: 14px;
+  }
+} 
