@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <div class="progress-section" v-if="isLoggedIn && showProgress">
+    <div class="progress-section" v-if="showProgress">
       <div class="progress-item">
         <h3>{{ studyMode === 'spelling' ? '拼写模式' : '连连看模式' }}</h3>
         <div class="progress-bar">
@@ -64,7 +64,6 @@ export default defineComponent({
     const userStore = useUserStore();
     const wordStudyStore = useWordStudyStore();
 
-    const isLoggedIn = computed(() => userStore.isLoggedIn);
     const showProgress = computed(() => {
       return route.path === '/home' || route.path === '/connect';
     });
@@ -93,7 +92,6 @@ export default defineComponent({
     };
 
     return {
-      isLoggedIn,
       showProgress,
       progress,
       progressPercentage,

@@ -34,6 +34,12 @@ const routes = [
     name: 'Profile',
     component: () => import('../views/profile/ProfileView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/messages',
+    name: 'Messages',
+    component: () => import('../views/messages/MessagesView.vue'),
+    meta: { requiresAuth: true }
   }
 ];
 

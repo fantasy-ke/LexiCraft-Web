@@ -92,12 +92,14 @@ import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { message } from 'ant-design-vue';
 import { SoundOutlined, ReadOutlined, TranslationOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
 import { useWordStudyStore, type Word, WORD_LIST_CHANGED_EVENT } from '@/store/wordStudy';
+import { useUserStore } from '@/store/user';
 import { fetchWordLists, getWordPronunciation } from '@/api/wordlist';
 import HeaderComponent from '@/components/common/HeaderComponent.vue';
 import FooterComponent from '@/components/common/FooterComponent.vue';
 import WordInput from '@/components/common/WordInput.vue';
 
 const wordStudyStore = useWordStudyStore();
+const userStore = useUserStore();
 const wordInputRef = ref<InstanceType<typeof WordInput> | null>(null);
 
 // 音频元素
@@ -181,45 +183,47 @@ const handleIncorrectLetter = (index: number) => {
 };
 
 // 处理单词完成
-const handleWordComplete = async (word: string) => {
-  if (currentWord.value) {
-    // 标记单词为已掌握
-    wordStudyStore.markWordAsMastered(currentWord.value.id, 'spelling');
-    
-    // 更新统计数据
-    const totalWords = wordList.value.length;
-    const masteredWords = wordStudyStore.getSpellingProgress.masteredWords;
-    const endTime = Date.now();
-    studyTime.value += Math.floor((endTime - startTime.value) / 1000);
-    
-    // 计算正确率
-    const totalTyped = word.length + errorCount.value;
-    const accuracy = Math.round((word.length / totalTyped) * 100);
+const handleWordComplete = (correct: boolean) => {
+  // 计算单词学习时间（秒）
+  const wordStudyTime = Math.round((Date.now() - startTime.value) / 1000);
+  studyTime.value += wordStudyTime;
+  
+  // 重置时间
+  startTime.value = Date.now();
+  
+  if (correct) {
+    // 如果是登录用户，记录学习进度
+    if (userStore.isLoggedIn && currentWord.value) {
+      wordStudyStore.markWordAsMastered(currentWord.value.id, 'spelling');
+    }
     
     // 更新进度
+    const accuracy = errorCount.value === 0 ? 100 : 
+      Math.max(0, 100 - Math.round((errorCount.value / currentWord.value!.word.length) * 100));
+    
+    const masteredCount = userStore.isLoggedIn ? 
+      wordStudyStore.getSpellingProgress.masteredWords + 1 : 
+      wordStudyStore.getSpellingProgress.masteredWords;
+      
     wordStudyStore.updateSpellingProgress({
-      totalWords,
-      masteredWords,
+      totalWords: wordList.value.length,
+      masteredWords: masteredCount,
       accuracy,
-      studyTime: studyTime.value
+      studyTime: wordStudyStore.getSpellingProgress.studyTime + wordStudyTime
     });
     
-    // 提示完成
-    message.success('恭喜你拼写正确！');
-    
-    // 自动进入下一个单词
+    // 自动前进到下一个单词
     if (currentWordIndex.value < wordList.value.length - 1) {
       setTimeout(() => {
         nextWord();
-      }, 800);
+      }, 1000);
     } else {
-      message.info('恭喜你已完成当前词库的学习！');
+      message.success('恭喜！您已完成所有单词学习');
     }
-    
-    // 重置错误计数和开始时间
-    errorCount.value = 0;
-    startTime.value = Date.now();
   }
+  
+  // 重置错误计数
+  errorCount.value = 0;
 };
 
 // 加载单词列表

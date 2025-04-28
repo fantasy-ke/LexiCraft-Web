@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-card">
       <div class="logo">
-        <img src="/logo.png" alt="LexiCraft Logo" class="logo-image" />
+        <img src="/logo.svg" alt="LexiCraft Logo" class="logo-image" />
         <h1>LexiCraft</h1>
         <p class="slogan">高效学习，成就词汇力量</p>
       </div>
@@ -33,7 +33,13 @@
 
             <a-form-item
               name="password"
-              :rules="[{ required: true, message: '请输入密码' }]"
+              :rules="[
+                { required: true, message: '请输入密码' },
+                { 
+                  pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+                  message: '密码长度至少6位，且必须包含字母和数字'
+                }
+              ]"
             >
               <a-input-password 
                 v-model:value="loginForm.password" 

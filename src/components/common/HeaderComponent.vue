@@ -16,12 +16,15 @@
         </template>
       </a-dropdown>
       <div class="menu-items">
-        <router-link to="/home" v-if="isLoggedIn">单词拼写</router-link>
-        <router-link to="/connect" v-if="isLoggedIn">连连看</router-link>
-        <router-link to="/profile" v-if="isLoggedIn">个人中心</router-link>
+        <router-link to="/home">单词拼写</router-link>
+        <router-link to="/connect">连连看</router-link>
       </div>
     </div>
-    <div class="user-profile" v-if="isLoggedIn">
+    <div class="user-actions" v-if="isLoggedIn">
+      <a class="notification-icon" @click="goToMessages">
+        <bell-outlined />
+        <a-badge :count="unreadCount" :dot="unreadCount > 0" />
+      </a>
       <a-dropdown>
         <a class="ant-dropdown-link" @click.prevent>
           <a-avatar :src="userInfo.avatar || '/default-avatar.png'" />
@@ -32,30 +35,44 @@
             <a-menu-item key="profile">
               <router-link to="/profile">个人中心</router-link>
             </a-menu-item>
+            <a-menu-item key="messages">
+              <router-link to="/messages">消息中心</router-link>
+            </a-menu-item>
             <a-menu-item key="logout" @click="handleLogout">退出登录</a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
     </div>
+    <div class="auth-buttons" v-else>
+      <router-link to="/login">
+        <a-button type="primary" class="login-btn">登录</a-button>
+      </router-link>
+      <router-link to="/register">
+        <a-button class="register-btn">注册</a-button>
+      </router-link>
+    </div>
   </header>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { DownOutlined } from '@ant-design/icons-vue';
+import { DownOutlined, BellOutlined } from '@ant-design/icons-vue';
 import { useUserStore } from '@/store/user';
 import { useWordStudyStore, type WordList } from '@/store/wordStudy';
+import { getUnreadCount } from '@/api/messages';
 
 export default defineComponent({
   name: 'HeaderComponent',
   components: {
-    DownOutlined
+    DownOutlined,
+    BellOutlined
   },
   setup() {
     const router = useRouter();
     const userStore = useUserStore();
     const wordStudyStore = useWordStudyStore();
+    const unreadCount = ref(0); // 未读消息数量
 
     const isLoggedIn = computed(() => userStore.isLoggedIn);
     const userInfo = computed(() => userStore.getUserInfo);
@@ -74,13 +91,36 @@ export default defineComponent({
       router.push('/login');
     };
 
+    const goToMessages = () => {
+      router.push('/messages');
+    };
+
+    // 获取未读消息数量
+    const fetchUnreadCount = async () => {
+      try {
+        // 只有登录用户才获取未读消息
+        if (isLoggedIn.value) {
+          unreadCount.value = await getUnreadCount();
+        }
+      } catch (error) {
+        console.error('获取未读消息数量失败', error);
+      }
+    };
+
+    // 初始化时获取未读消息数量
+    onMounted(() => {
+      fetchUnreadCount();
+    });
+
     return {
       isLoggedIn,
       userInfo,
       wordLists,
       currentWordList,
+      unreadCount,
       handleWordListSelect,
-      handleLogout
+      handleLogout,
+      goToMessages
     };
   }
 });
@@ -132,14 +172,43 @@ export default defineComponent({
     }
   }
 
-  .user-profile {
+  .user-actions {
     display: flex;
     align-items: center;
-    cursor: pointer;
+    gap: 16px;
+
+    .notification-icon {
+      position: relative;
+      cursor: pointer;
+      font-size: 20px;
+      color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &:hover {
+        color: #1890ff;
+      }
+
+      .ant-badge {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+      }
+    }
 
     .username {
       margin-left: 8px;
       font-size: 14px;
+    }
+  }
+
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+    
+    .login-btn, .register-btn {
+      border-radius: 6px;
     }
   }
 }

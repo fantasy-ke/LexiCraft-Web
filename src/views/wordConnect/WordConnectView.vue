@@ -116,10 +116,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
+import { ref, reactive, computed, onMounted, onUnmounted, watchEffect } from 'vue';
 import { message } from 'ant-design-vue';
 import { ReloadOutlined, ForwardOutlined } from '@ant-design/icons-vue';
-import { useWordStudyStore, type Word, WORD_LIST_CHANGED_EVENT } from '@/store/wordStudy';
+import { useWordStudyStore, type Word, WORD_LIST_CHANGED_EVENT, type WordList } from '@/store/wordStudy';
+import { useUserStore } from '@/store/user';
 import { fetchWordLists } from '@/api/wordlist';
 import HeaderComponent from '@/components/common/HeaderComponent.vue';
 import FooterComponent from '@/components/common/FooterComponent.vue';
@@ -146,6 +147,7 @@ const linesContainer = ref<SVGElement | null>(null);
 // 游戏设置
 const wordCount = ref(5);
 const wordStudyStore = useWordStudyStore();
+const userStore = useUserStore();
 const learnedWordIds = ref<string[]>([]);
 
 // 游戏状态
@@ -161,6 +163,8 @@ const correctPairs = ref(0);
 const totalPairs = ref(0);
 const gameTime = ref(0);
 const gameTimer = ref<number | null>(null);
+const gameStartTime = ref(0);
+const correctConnections = ref<Connection[]>([]);
 
 // 进度百分比
 const progressPercent = computed(() => {
@@ -264,7 +268,7 @@ const tryConnect = () => {
       
       // 检查游戏是否完成
       if (correctPairs.value === totalPairs.value) {
-        gameComplete();
+        gameOver();
       }
     } else {
       // 错误连接，短暂显示后移除
@@ -281,28 +285,49 @@ const tryConnect = () => {
   }
 };
 
-// 更新进度
+// 计算分数和更新学习进度
 const updateProgress = () => {
-  const progress = {
-    totalWords: totalPairs.value,
-    masteredWords: correctPairs.value,
-    accuracy: Math.round((correctPairs.value / (correctPairs.value + connections.value.length - correctPairs.value)) * 100),
-    studyTime: gameTime.value
-  };
+  const totalTime = Math.round((Date.now() - gameStartTime.value) / 1000);
   
-  wordStudyStore.updateConnectProgress(progress);
+  const accuracy = correctPairs.value === 0 ? 0 : 
+    Math.round((correctPairs.value / totalPairs.value) * 100);
+  
+  // 只有登录用户才会记录掌握单词
+  const masteredCount = userStore.isLoggedIn ? 
+    correctPairs.value : 
+    wordStudyStore.getConnectProgress.masteredWords;
+  
+  // 更新连连看进度
+  wordStudyStore.updateConnectProgress({
+    totalWords: totalPairs.value,
+    masteredWords: masteredCount,
+    accuracy,
+    studyTime: wordStudyStore.getConnectProgress.studyTime + totalTime
+  });
 };
 
-// 游戏完成
-const gameComplete = () => {
+// 游戏结束
+const gameOver = () => {
   if (gameTimer.value) {
     clearInterval(gameTimer.value);
     gameTimer.value = null;
   }
   
-  message.success('恭喜你成功完成所有单词连接！');
+  const allCompleted = connectedWords.value.length === shuffledWords.value.length;
   
-  // 更新最终进度
+  if (allCompleted) {
+    message.success('恭喜！您已完成本轮连连看');
+    
+    // 记录正确连接的单词为已掌握（仅登录用户）
+    if (userStore.isLoggedIn) {
+      correctConnections.value.forEach(conn => {
+        const wordId = shuffledWords.value[conn.wordIndex].id;
+        wordStudyStore.markWordAsMastered(wordId, 'connect');
+      });
+    }
+  }
+  
+  // 更新进度
   updateProgress();
 };
 
@@ -346,6 +371,7 @@ const loadNewWords = async (excludeLearned: boolean) => {
   }
   
   // 开始计时
+  gameStartTime.value = Date.now();
   gameTimer.value = window.setInterval(() => {
     gameTime.value++;
   }, 1000);
