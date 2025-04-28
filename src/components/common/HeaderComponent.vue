@@ -22,6 +22,10 @@
       </div>
     </div>
     <div class="user-actions" v-if="isLoggedIn">
+      <a class="theme-toggle" @click="handleThemeToggle">
+        <bulb-outlined v-if="isDarkTheme" />
+        <bulb-filled v-else />
+      </a>
       <a class="notification-icon" @click="goToMessages">
         <bell-outlined />
         <a-badge :count="unreadCount" :dot="unreadCount > 0" />
@@ -45,6 +49,10 @@
       </a-dropdown>
     </div>
     <div class="auth-buttons" v-else>
+      <a class="theme-toggle" @click="handleThemeToggle">
+        <bulb-outlined v-if="isDarkTheme" />
+        <bulb-filled v-else />
+      </a>
       <router-link to="/login">
         <a-button type="primary" class="login-btn">登录</a-button>
       </router-link>
@@ -58,27 +66,32 @@
 <script lang="ts">
 import { computed, defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { DownOutlined, BellOutlined } from '@ant-design/icons-vue';
+import { DownOutlined, BellOutlined, BulbOutlined, BulbFilled } from '@ant-design/icons-vue';
 import { useUserStore } from '@/store/user';
 import { useWordStudyStore, type WordList } from '@/store/wordStudy';
+import { useThemeStore } from '@/store/theme';
 import { getUnreadCount } from '@/api/messages';
 
 export default defineComponent({
   name: 'HeaderComponent',
   components: {
     DownOutlined,
-    BellOutlined
+    BellOutlined,
+    BulbOutlined,
+    BulbFilled
   },
   setup() {
     const router = useRouter();
     const userStore = useUserStore();
     const wordStudyStore = useWordStudyStore();
-    const unreadCount = ref(0); // 未读消息数量
+    const themeStore = useThemeStore();
+    const unreadCount = ref(0);
 
     const isLoggedIn = computed(() => userStore.isLoggedIn);
     const userInfo = computed(() => userStore.getUserInfo);
     const wordLists = computed(() => wordStudyStore.getWordLists);
     const currentWordList = computed(() => wordStudyStore.getCurrentWordList);
+    const isDarkTheme = computed(() => themeStore.theme === 'dark');
 
     const handleWordListSelect = (e: any) => {
       const selectedList = wordLists.value.find(list => list.id === e.key);
@@ -110,8 +123,13 @@ export default defineComponent({
 
     // 初始化时获取未读消息数量
     onMounted(() => {
+      themeStore.initTheme();
       fetchUnreadCount();
     });
+
+    const handleThemeToggle = () => {
+      themeStore.toggleTheme();
+    };
 
     return {
       isLoggedIn,
@@ -119,6 +137,8 @@ export default defineComponent({
       wordLists,
       currentWordList,
       unreadCount,
+      isDarkTheme,
+      handleThemeToggle,
       handleWordListSelect,
       handleLogout,
       goToMessages
@@ -133,8 +153,8 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background-color: var(--background-color);
+  box-shadow: var(--box-shadow);
   border-radius: 16px;
   margin-bottom: 16px;
 
@@ -151,7 +171,7 @@ export default defineComponent({
     h1 {
       font-size: 24px;
       font-weight: bold;
-      color: #1890ff;
+      color: var(--primary-color);
       margin: 0;
     }
   }
@@ -167,7 +187,7 @@ export default defineComponent({
 
       a {
         font-size: 16px;
-        color: #333;
+        color: var(--text-color);
         text-decoration: none;
         padding: 6px 12px;
         border-radius: 8px;
@@ -175,8 +195,8 @@ export default defineComponent({
 
         &:hover,
         &.router-link-active {
-          color: #1890ff;
-          background-color: #f0f5ff;
+          color: var(--primary-color);
+          background-color: var(--background-color-secondary);
         }
       }
     }
@@ -187,17 +207,30 @@ export default defineComponent({
     align-items: center;
     gap: 16px;
 
-    .notification-icon {
-      position: relative;
+    .theme-toggle {
       cursor: pointer;
       font-size: 20px;
-      color: #666;
+      color: var(--text-color-secondary);
       display: flex;
       align-items: center;
       justify-content: center;
       
       &:hover {
-        color: #1890ff;
+        color: var(--primary-color);
+      }
+    }
+
+    .notification-icon {
+      position: relative;
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--text-color-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &:hover {
+        color: var(--primary-color);
       }
 
       .ant-badge {
@@ -210,12 +243,25 @@ export default defineComponent({
     .username {
       margin-left: 8px;
       font-size: 14px;
+      color: var(--text-color);
     }
   }
 
   .auth-buttons {
     display: flex;
+    align-items: center;
     gap: 10px;
+    
+    .theme-toggle {
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--text-color-secondary);
+      margin-right: 10px;
+      
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
     
     .login-btn, .register-btn {
       border-radius: 6px;

@@ -20,7 +20,11 @@ html, body {
 
 body {
   background-color: #f0f2f5;
-  min-height: 100vh;
+}
+
+html, body {
+  height: 100%;
+  overflow-y: auto;
 }
 
 a {
