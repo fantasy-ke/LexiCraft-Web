@@ -6,7 +6,7 @@
       <div class="connect-header">
         <div class="header-left">
           <a-select 
-            v-model:value="wordCount" 
+            :value ="wordCount" 
             style="width: 200px" 
             @change="handleCountChange"
           >

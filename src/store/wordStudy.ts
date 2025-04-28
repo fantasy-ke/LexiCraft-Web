@@ -10,6 +10,7 @@ export interface Word {
   translation: string;
   pronunciation?: string;
   example?: string;
+  exampleTranslation?: string;
   mastered?: boolean;
   lastStudied?: number;
 }

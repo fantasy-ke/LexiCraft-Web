@@ -65,6 +65,9 @@
           <a-typography-paragraph>
             <strong>例句：</strong>{{ currentWord.example }}
           </a-typography-paragraph>
+          <a-typography-paragraph v-if="currentWord.exampleTranslation" class="example-translation">
+            <strong>翻译：</strong>{{ currentWord.exampleTranslation }}
+          </a-typography-paragraph>
         </div>
 
         <div class="word-navigation">
@@ -291,7 +294,7 @@ onUnmounted(() => {
   padding: 20px;
   
   .content {
-    min-height: calc(100vh - 420px);
+    min-height: calc(100vh - 280px);
     
     .word-study-container {
       background-color: white;
@@ -410,6 +413,12 @@ onUnmounted(() => {
         background-color: #f5f5f5;
         border-radius: 8px;
         color: #595959;
+        
+        .example-translation {
+          font-style: italic;
+          color: #8c8c8c;
+          margin-top: 8px;
+        }
       }
       
       .word-navigation {
