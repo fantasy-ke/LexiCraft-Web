@@ -168,6 +168,7 @@
                       </a-list-item-meta>
                       <template #actions>
                         <a-tag color="blue">{{ item.count }} 个单词</a-tag>
+                        <a-tag v-if="isCurrentWordList(item)" color="green">当前选中</a-tag>
                         <a key="select" @click="selectWordList(item)">选择使用</a>
                       </template>
                     </a-list-item>
@@ -283,6 +284,14 @@ const listLoading = ref(false);
 
 // 词库列表
 const wordLists = computed(() => wordStudyStore.getWordLists);
+
+// 当前选中的词库
+const currentWordList = computed(() => wordStudyStore.getCurrentWordList);
+
+// 判断是否是当前选中的词库
+const isCurrentWordList = (wordList: WordList) => {
+  return currentWordList.value && currentWordList.value.id === wordList.id;
+};
 
 // 文件上传相关
 const fileList = ref([]);
@@ -461,6 +470,16 @@ const initData = async () => {
     if (wordLists.value.length === 0) {
       const lists = await fetchWordLists();
       wordStudyStore.updateWordList(lists);
+      
+      // 检查是否有当前选中的词库，如果没有则选择第一个词库作为默认选中
+      if (lists.length > 0 && !currentWordList.value) {
+        wordStudyStore.setCurrentWordList(lists[0]);
+        // message.success(`已自动选择词库: ${lists[0].name}`);
+      }
+    } else if (wordLists.value.length > 0 && !currentWordList.value) {
+      // 如果词库列表已加载但没有选中词库，则选择第一个
+      wordStudyStore.setCurrentWordList(wordLists.value[0]);
+      // message.success(`已自动选择词库: ${wordLists.value[0].name}`);
     }
   } catch (error) {
     message.error('获取词库数据失败');
@@ -476,4 +495,4 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 @use '@/styles/views/ProfileView.scss';
-</style> 
+</style>

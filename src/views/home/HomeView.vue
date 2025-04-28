@@ -292,5 +292,5 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/views/HomeView.scss';
+@use '@/styles/views/HomeView.scss';
 </style> 
