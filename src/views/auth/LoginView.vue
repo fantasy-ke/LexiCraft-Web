@@ -175,6 +175,64 @@ const handleGiteeLogin = () => {
   box-shadow: var(--box-shadow);
   padding: 40px;
   
+  :deep(.ant-input),
+  :deep(.ant-input-password) {
+    background-color: var(--input-background);
+    border-color: var(--input-border);
+    color: var(--text-color);
+    
+    &::placeholder {
+      color: var(--text-color-placeholder);
+    }
+    
+    .ant-input-password-icon {
+      color: var(--text-color-secondary);
+    }
+  }
+  
+  :deep(.ant-input-affix-wrapper) {
+    background-color: var(--input-background);
+    border-color: var(--input-border);
+    
+    .ant-input-prefix {
+      color: var(--text-color-secondary);
+    }
+  }
+  
+  :deep(.ant-checkbox-wrapper) {
+    color: var(--text-color);
+    
+    .ant-checkbox {
+      .ant-checkbox-inner {
+        background-color: var(--input-background);
+        border-color: var(--input-border);
+      }
+      
+      &.ant-checkbox-checked {
+        .ant-checkbox-inner {
+          background-color: var(--primary-color);
+          border-color: var(--primary-color);
+        }
+      }
+    }
+  }
+  
+  :deep(.ant-tabs) {
+    .ant-tabs-tab {
+      color: var(--text-color-secondary);
+      
+      &.ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+          color: var(--primary-color);
+        }
+      }
+    }
+    
+    .ant-tabs-ink-bar {
+      background-color: var(--primary-color);
+    }
+  }
+  
   .logo {
     text-align: center;
     margin-bottom: 32px;

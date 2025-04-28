@@ -4,9 +4,12 @@ import { ref, watch } from 'vue';
 export const useThemeStore = defineStore('theme', () => {
   const theme = ref<'light' | 'dark'>('light');
   
-  // 初始化时检查系统主题
+  // 初始化时检查本地存储和系统主题
   const initTheme = () => {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      theme.value = savedTheme as 'light' | 'dark';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       theme.value = 'dark';
     }
     applyTheme();
@@ -32,6 +35,9 @@ export const useThemeStore = defineStore('theme', () => {
       applyTheme();
     }
   });
+
+  // 立即初始化主题
+  initTheme();
 
   return {
     theme,

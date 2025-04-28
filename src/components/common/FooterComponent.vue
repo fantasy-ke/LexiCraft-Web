@@ -45,6 +45,7 @@ import { useRoute } from 'vue-router';
 import { GithubOutlined, TwitterOutlined, FacebookOutlined } from '@ant-design/icons-vue';
 import { useUserStore } from '@/store/user';
 import { useWordStudyStore } from '@/store/wordStudy';
+import { useThemeStore } from '@/store/theme';
 
 export default defineComponent({
   name: 'FooterComponent',
@@ -63,6 +64,7 @@ export default defineComponent({
     const route = useRoute();
     const userStore = useUserStore();
     const wordStudyStore = useWordStudyStore();
+    const themeStore = useThemeStore();
 
     const showProgress = computed(() => {
       return route.path === '/home' || route.path === '/connect';
@@ -95,7 +97,8 @@ export default defineComponent({
       showProgress,
       progress,
       progressPercentage,
-      formatTime
+      formatTime,
+      theme: themeStore.theme
     };
   }
 });
@@ -104,9 +107,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 .footer {
   padding: 16px 24px;
-  background-color: #fff;
   border-radius: 16px;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+  background-color: var(--card-background);
+  box-shadow: var(--box-shadow);
   margin-top: 16px;
 
   .progress-section {
@@ -116,19 +119,19 @@ export default defineComponent({
       h3 {
         font-size: 16px;
         margin-bottom: 8px;
-        color: #333;
+        color: var(--text-primary-color);
       }
 
       .progress-bar {
         height: 8px;
-        background-color: #f0f0f0;
+        background-color: var(--progress-bg-color);
         border-radius: 4px;
         overflow: hidden;
         margin-bottom: 8px;
 
         .progress-filled {
           height: 100%;
-          background-color: #1890ff;
+          background-color: var(--primary-color);
           border-radius: 4px;
           transition: width 0.3s ease;
         }
@@ -138,7 +141,7 @@ export default defineComponent({
         display: flex;
         justify-content: space-between;
         font-size: 14px;
-        color: #666;
+        color: var(--text-secondary-color);
       }
     }
   }
@@ -148,10 +151,10 @@ export default defineComponent({
     justify-content: space-between;
     align-items: center;
     padding-top: 16px;
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid var(--border-color);
     
     p {
-      color: #666;
+      color: var(--text-secondary-color);
       font-size: 14px;
       margin: 0;
     }

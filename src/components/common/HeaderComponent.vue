@@ -153,10 +153,44 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background-color: var(--background-color);
+  background-color: var(--card-background);
   box-shadow: var(--box-shadow);
   border-radius: 16px;
   margin-bottom: 16px;
+
+  :deep(.ant-dropdown) {
+    .ant-dropdown-menu {
+      background-color: var(--card-background);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--box-shadow);
+      
+      .ant-dropdown-menu-item {
+        color: var(--text-color);
+        background-color: var(--card-background);
+        
+        &:hover {
+          background-color: var(--background-color-secondary);
+        }
+        
+        a {
+          color: var(--text-color);
+          
+          &:hover {
+            color: var(--primary-color);
+          }
+        }
+      }
+    }
+  }
+
+  :deep(.ant-dropdown-trigger) {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
 
   .logo {
     display: flex;
@@ -180,6 +214,15 @@ export default defineComponent({
     display: flex;
     align-items: center;
     gap: 24px;
+
+    .ant-dropdown-link {
+      color: var(--text-color);
+      cursor: pointer;
+      
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
 
     .menu-items {
       display: flex;

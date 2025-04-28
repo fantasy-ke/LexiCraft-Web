@@ -298,7 +298,7 @@ onUnmounted(() => {
   padding: 20px;
   
   .content {
-    min-height: calc(100vh - 280px);
+    min-height: calc(100vh - 380px);
     
     .word-study-container {
       background-color: var(--card-background);
@@ -416,12 +416,24 @@ onUnmounted(() => {
         padding: 16px;
         background-color: var(--background-color-secondary);
         border-radius: 8px;
-        color: var(--text-color-secondary);
+        color: var(--text-color);
+        
+        :deep(.ant-typography) {
+          color: var(--text-color);
+          
+          strong {
+            color: var(--text-color);
+          }
+        }
         
         .example-translation {
           font-style: italic;
           color: var(--text-color-secondary);
           margin-top: 8px;
+          
+          strong {
+            color: var(--text-color-secondary);
+          }
         }
       }
       

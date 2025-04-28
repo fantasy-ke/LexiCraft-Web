@@ -275,6 +275,59 @@ onMounted(() => {
     box-shadow: var(--box-shadow);
     margin-bottom: 20px;
     
+    :deep(.ant-tabs) {
+      .ant-tabs-tab {
+        color: var(--text-color-secondary);
+        
+        &.ant-tabs-tab-active {
+          .ant-tabs-tab-btn {
+            color: var(--primary-color);
+          }
+        }
+      }
+      
+      .ant-tabs-ink-bar {
+        background-color: var(--primary-color);
+      }
+    }
+    
+    :deep(.ant-pagination) {
+      .ant-pagination-item {
+        background-color: var(--input-background);
+        border-color: var(--input-border);
+        
+        a {
+          color: var(--text-color);
+        }
+        
+        &.ant-pagination-item-active {
+          background-color: var(--primary-color);
+          border-color: var(--primary-color);
+          
+          a {
+            color: var(--text-color-inverse);
+          }
+        }
+      }
+      
+      .ant-pagination-prev,
+      .ant-pagination-next {
+        button {
+          background-color: var(--input-background);
+          border-color: var(--input-border);
+          color: var(--text-color);
+        }
+      }
+      
+      .ant-pagination-options {
+        .ant-select-selector {
+          background-color: var(--input-background);
+          border-color: var(--input-border);
+          color: var(--text-color);
+        }
+      }
+    }
+    
     .page-header {
       display: flex;
       justify-content: space-between;

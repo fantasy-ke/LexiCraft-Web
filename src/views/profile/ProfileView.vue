@@ -483,6 +483,123 @@ onMounted(() => {
   .content {
     margin-bottom: 20px;
     
+    :deep(.ant-tabs) {
+      .ant-tabs-tab {
+        color: var(--text-color-secondary);
+        
+        &.ant-tabs-tab-active {
+          .ant-tabs-tab-btn {
+            color: var(--primary-color);
+          }
+        }
+      }
+      
+      .ant-tabs-ink-bar {
+        background-color: var(--primary-color);
+      }
+    }
+    
+    :deep(.ant-form) {
+      .ant-form-item-label > label {
+        color: var(--text-color);
+      }
+      
+      .ant-input,
+      .ant-input-textarea {
+        background-color: var(--input-background);
+        border-color: var(--input-border);
+        color: var(--text-color);
+        
+        &::placeholder {
+          color: var(--text-color-placeholder);
+        }
+      }
+    }
+    
+    :deep(.ant-statistic) {
+      .ant-statistic-title {
+        color: var(--text-color-secondary);
+      }
+      
+      .ant-statistic-content {
+        color: var(--text-color);
+      }
+    }
+    
+    :deep(.ant-progress) {
+      .ant-progress-text {
+        color: var(--text-color);
+      }
+      
+      .ant-progress-bg {
+        background-color: var(--primary-color);
+      }
+    }
+    
+    :deep(.ant-list) {
+      .ant-list-item {
+        color: var(--text-color);
+        
+        .ant-list-item-meta {
+          .ant-list-item-meta-title {
+            color: var(--text-color);
+          }
+          
+          .ant-list-item-meta-description {
+            color: var(--text-color-secondary);
+          }
+        }
+        
+        .ant-tag {
+          color: var(--text-color);
+          background-color: var(--background-color-secondary);
+          border-color: var(--border-color);
+        }
+        
+        a {
+          color: var(--link-color);
+          
+          &:hover {
+            color: var(--link-hover);
+          }
+        }
+      }
+    }
+    
+    :deep(.ant-input-group) {
+      .ant-input {
+        background-color: var(--input-background);
+        border-color: var(--input-border);
+        color: var(--text-color);
+        
+        &::placeholder {
+          color: var(--text-color-placeholder);
+        }
+      }
+      
+      .ant-btn {
+        background-color: var(--button-background);
+        border-color: var(--input-border);
+        color: var(--button-text);
+      }
+    }
+    
+    :deep(.ant-typography) {
+      color: var(--text-color);
+      
+      &.ant-typography-secondary {
+        color: var(--text-color-secondary);
+      }
+      
+      a {
+        color: var(--link-color);
+        
+        &:hover {
+          color: var(--link-hover);
+        }
+      }
+    }
+    
     .profile-card {
       border-radius: 12px;
       overflow: hidden;
@@ -532,10 +649,11 @@ onMounted(() => {
           font-size: 20px;
           font-weight: bold;
           margin: 8px 0 4px;
+          color: var(--text-color);
         }
         
         .email {
-          color: #8c8c8c;
+          color: var(--text-color-secondary);
           margin: 0;
         }
       }
@@ -551,13 +669,13 @@ onMounted(() => {
           .stat-value {
             font-size: 24px;
             font-weight: bold;
-            color: #1890ff;
+            color: var(--primary-color);
             margin-bottom: 4px;
           }
           
           .stat-label {
             font-size: 12px;
-            color: #8c8c8c;
+            color: var(--text-color-secondary);
             margin: 0;
           }
         }
@@ -577,6 +695,7 @@ onMounted(() => {
       
       h3 {
         margin-bottom: 16px;
+        color: var(--text-color);
       }
     }
     
@@ -596,6 +715,10 @@ onMounted(() => {
     
     .invite-section {
       margin-top: 24px;
+      
+      h3 {
+        color: var(--text-color);
+      }
     }
   }
 }
