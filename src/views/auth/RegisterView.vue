@@ -2,7 +2,7 @@
   <div class="register-container">
     <div class="register-card">
       <div class="logo">
-        <img src="/logo.png" alt="LexiCraft Logo" class="logo-image" />
+        <img src="/logo.svg" alt="LexiCraft Logo" class="logo-image" />
         <h1>LexiCraft</h1>
         <p class="slogan">创建账号，开始学习之旅</p>
       </div>
@@ -16,7 +16,7 @@
       >
         <a-form-item name="username">
           <a-input 
-            v-model="registerForm.username" 
+            v-model:value="registerForm.username" 
             placeholder="用户名" 
             size="large"
           >
@@ -28,7 +28,7 @@
 
         <a-form-item name="email">
           <a-input 
-            v-model="registerForm.email" 
+            v-model:value="registerForm.email" 
             placeholder="邮箱" 
             size="large"
           >
@@ -40,7 +40,7 @@
 
         <a-form-item name="password">
           <a-input-password 
-            v-model="registerForm.password" 
+            v-model:value="registerForm.password" 
             placeholder="设置密码" 
             size="large"
           >
@@ -52,7 +52,7 @@
 
         <a-form-item name="confirmPassword">
           <a-input-password 
-            v-model="registerForm.confirmPassword" 
+            v-model:value="registerForm.confirmPassword" 
             placeholder="确认密码" 
             size="large"
           >
@@ -63,7 +63,7 @@
         </a-form-item>
 
         <a-form-item name="agreement">
-          <a-checkbox v-model="registerForm.agreement">
+          <a-checkbox v-model:value="registerForm.agreement">
             我已阅读并同意<a>服务条款</a>和<a>隐私政策</a>
           </a-checkbox>
         </a-form-item>
@@ -120,7 +120,10 @@ const rules = {
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: '密码长度不能少于6个字符', trigger: 'blur' }
+    { 
+      pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+      message: '密码长度至少6位，且必须包含字母和数字'
+    }
   ],
   confirmPassword: [
     { required: true, message: '请确认密码', trigger: 'blur' },

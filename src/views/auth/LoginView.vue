@@ -34,11 +34,7 @@
             <a-form-item
               name="password"
               :rules="[
-                { required: true, message: '请输入密码' },
-                { 
-                  pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-                  message: '密码长度至少6位，且必须包含字母和数字'
-                }
+                { required: true, message: '请输入密码' }
               ]"
             >
               <a-input-password 

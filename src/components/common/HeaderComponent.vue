@@ -1,6 +1,7 @@
 <template>
   <header class="header">
     <div class="logo">
+      <img src="/logo.svg" alt="LexiCraft Logo" class="logo-image" />
       <h1>LexiCraft</h1>
     </div>
     <div class="nav-menu">
@@ -138,6 +139,15 @@ export default defineComponent({
   margin-bottom: 16px;
 
   .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .logo-image {
+      width: 32px;
+      height: 32px;
+    }
+
     h1 {
       font-size: 24px;
       font-weight: bold;
