@@ -163,16 +163,16 @@ const handleGiteeLogin = () => {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--background-color);
   padding: 20px;
 }
 
 .login-card {
   width: 100%;
   max-width: 420px;
-  background-color: white;
+  background-color: var(--card-background);
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   padding: 40px;
   
   .logo {
@@ -188,13 +188,13 @@ const handleGiteeLogin = () => {
     h1 {
       font-size: 28px;
       font-weight: bold;
-      color: #1890ff;
+      color: var(--primary-color);
       margin-bottom: 8px;
     }
     
     .slogan {
       font-size: 16px;
-      color: #8c8c8c;
+      color: var(--text-color-secondary);
     }
   }
   
@@ -208,7 +208,7 @@ const handleGiteeLogin = () => {
     align-items: center;
     
     .forgot-link {
-      color: #1890ff;
+      color: var(--primary-color);
       cursor: pointer;
     }
   }
@@ -217,10 +217,10 @@ const handleGiteeLogin = () => {
     text-align: center;
     margin-top: 16px;
     font-size: 14px;
-    color: #8c8c8c;
+    color: var(--text-color-secondary);
     
     a {
-      color: #1890ff;
+      color: var(--primary-color);
     }
   }
   

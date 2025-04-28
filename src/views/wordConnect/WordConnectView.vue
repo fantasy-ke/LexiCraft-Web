@@ -532,28 +532,29 @@ onUnmounted(() => {
           .word-item,
           .translation-item {
             padding: 12px 16px;
-            background-color: #f5f5f5;
+            background-color: var(--background-color-secondary);
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             user-select: none;
             min-width: 150px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow);
+            color: var(--text-color);
             
             &:hover {
-              background-color: #e6f7ff;
+              background-color: var(--background-color);
               box-shadow: 0 2px 8px rgba(24, 144, 255, 0.2);
             }
             
             &.selected {
-              background-color: #1890ff;
-              color: white;
+              background-color: var(--primary-color);
+              color: var(--text-color);
             }
             
             &.connected {
-              background-color: #52c41a;
-              color: white;
+              background-color: var(--success-color);
+              color: var(--text-color);
               cursor: default;
             }
           }
@@ -575,17 +576,17 @@ onUnmounted(() => {
             height: 100%;
             
             line {
-              stroke: #1890ff;
+              stroke: var(--primary-color);
               stroke-dasharray: 5;
               animation: dash 20s linear infinite;
               
               &.correct-line {
-                stroke: #52c41a;
+                stroke: var(--success-color);
                 stroke-width: 3;
               }
               
               &.incorrect-line {
-                stroke: #f5222d;
+                stroke: var(--error-color);
               }
             }
           }

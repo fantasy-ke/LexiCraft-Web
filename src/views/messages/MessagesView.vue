@@ -269,10 +269,10 @@ onMounted(() => {
   padding: 20px;
   
   .content {
-    background-color: white;
+    background-color: var(--card-background);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--box-shadow);
     margin-bottom: 20px;
     
     .page-header {
@@ -284,7 +284,7 @@ onMounted(() => {
       h1 {
         font-size: 24px;
         margin: 0;
-        color: #262626;
+        color: var(--text-color);
       }
       
       .actions {
@@ -302,21 +302,22 @@ onMounted(() => {
         align-items: center;
         font-size: 16px;
         font-weight: 500;
+        color: var(--text-color);
         
         .unread-icon {
-          color: #f5222d;
+          color: var(--error-color);
           margin-right: 8px;
           animation: pulsate 1.5s infinite;
         }
       }
       
       .message-content {
-        color: #595959;
+        color: var(--text-color-secondary);
         margin-top: 4px;
       }
       
       .message-time {
-        color: #8c8c8c;
+        color: var(--text-color-secondary);
         font-size: 12px;
         margin-top: 4px;
       }
@@ -327,7 +328,7 @@ onMounted(() => {
       flex-direction: column;
       align-items: center;
       padding: 48px 0;
-      color: #8c8c8c;
+      color: var(--text-color-secondary);
       
       .anticon {
         font-size: 48px;
@@ -345,10 +346,11 @@ onMounted(() => {
       font-size: 16px;
       line-height: 1.6;
       margin-bottom: 16px;
+      color: var(--text-color);
     }
     
     .announcement-time {
-      color: #8c8c8c;
+      color: var(--text-color-secondary);
       font-size: 14px;
     }
   }

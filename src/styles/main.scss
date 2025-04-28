@@ -5,6 +5,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  // color: var(--text-color);
 }
 
 html, body {
@@ -13,13 +14,13 @@ html, body {
     'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #333;
+  color: var(--text-color);
   font-size: 16px;
   line-height: 1.5;
 }
 
 body {
-  background-color: #f0f2f5;
+  background-color: var(--background-color);
 }
 
 html, body {
@@ -29,35 +30,46 @@ html, body {
 
 a {
   text-decoration: none;
-  color: #1890ff;
+  color: var(--primary-color);
   transition: color 0.3s ease;
 
   &:hover {
-    color: #40a9ff;
+    color: var(--primary-color);
+    opacity: 0.8;
   }
 }
 
 // Ant Design 样式覆盖
 .ant-btn {
   border-radius: 8px;
+  // color: var(--text-color);
 }
 
 .ant-input, .ant-input-password {
   border-radius: 8px;
+  color: var(--text-color);
+  background-color: var(--input-background);
+  border-color: var(--input-border);
 }
 
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   border-radius: 8px;
+  color: var(--text-color);
+  background-color: var(--input-background);
+  border-color: var(--input-border);
 }
 
 .ant-card {
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--box-shadow);
+  background-color: var(--card-background);
+  color: var(--text-color);
 }
 
 .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
   border-radius: 8px 8px 0 0;
+  color: var(--text-color);
 }
 
 // 动画

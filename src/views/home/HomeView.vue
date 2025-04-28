@@ -301,10 +301,10 @@ onUnmounted(() => {
     min-height: calc(100vh - 280px);
     
     .word-study-container {
-      background-color: white;
+      background-color: var(--card-background);
       border-radius: 16px;
       padding: 32px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: var(--box-shadow);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -335,8 +335,8 @@ onUnmounted(() => {
           }
           
           &.active {
-            color: #1890ff;
-            background-color: #e6f7ff;
+            color: var(--primary-color);
+            background-color: var(--background-color-secondary);
           }
         }
       }
@@ -354,7 +354,7 @@ onUnmounted(() => {
             font-size: 36px;
             font-weight: bold;
             margin-bottom: 8px;
-            color: #262626;
+            color: var(--text-color);
           }
           
           .pronunciation-container {
@@ -366,13 +366,13 @@ onUnmounted(() => {
             
             .word-phonetic {
               font-size: 16px;
-              color: #8c8c8c;
+              color: var(--text-color-secondary);
               margin-right: 10px;
             }
             
             .sound-button, .sound-button-solo {
               font-size: 18px;
-              color: #1890ff;
+              color: var(--primary-color);
               cursor: pointer;
               width: 24px;
               height: 24px;
@@ -389,7 +389,7 @@ onUnmounted(() => {
               }
               
               &:hover {
-                background-color: #e6f7ff;
+                background-color: var(--background-color-secondary);
                 transform: scale(1.1);
               }
             }
@@ -401,7 +401,7 @@ onUnmounted(() => {
           
           .word-translation {
             font-size: 18px;
-            color: #595959;
+            color: var(--text-color-secondary);
           }
         }
       }
@@ -414,13 +414,13 @@ onUnmounted(() => {
         max-width: 600px;
         margin: 0 auto 24px;
         padding: 16px;
-        background-color: #f5f5f5;
+        background-color: var(--background-color-secondary);
         border-radius: 8px;
-        color: #595959;
+        color: var(--text-color-secondary);
         
         .example-translation {
           font-style: italic;
-          color: #8c8c8c;
+          color: var(--text-color-secondary);
           margin-top: 8px;
         }
       }
