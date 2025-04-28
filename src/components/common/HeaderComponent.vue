@@ -17,8 +17,14 @@
         </template>
       </a-dropdown>
       <div class="menu-items">
-        <router-link to="/home">单词拼写</router-link>
-        <router-link to="/connect">连连看</router-link>
+        <router-link to="/home">
+          <form-outlined />
+          单词拼写
+        </router-link>
+        <router-link to="/connect">
+          <link-outlined />
+          连连看
+        </router-link>
       </div>
     </div>
     <div class="user-actions" v-if="isLoggedIn">
@@ -38,12 +44,21 @@
         <template #overlay>
           <a-menu>
             <a-menu-item key="profile">
-              <router-link to="/profile">个人中心</router-link>
+              <router-link to="/profile">
+                <user-outlined />
+                个人中心
+              </router-link>
             </a-menu-item>
             <a-menu-item key="messages">
-              <router-link to="/messages">消息中心</router-link>
+              <router-link to="/messages">
+                <message-outlined />
+                消息中心
+              </router-link>
             </a-menu-item>
-            <a-menu-item key="logout" @click="handleLogout">退出登录</a-menu-item>
+            <a-menu-item key="logout" @click="handleLogout">
+              <logout-outlined />
+              退出登录
+            </a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
@@ -66,7 +81,17 @@
 <script lang="ts">
 import { computed, defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { DownOutlined, BellOutlined, BulbOutlined, BulbFilled } from '@ant-design/icons-vue';
+import { 
+  DownOutlined, 
+  BellOutlined, 
+  BulbOutlined, 
+  BulbFilled,
+  FormOutlined,
+  LinkOutlined,
+  UserOutlined,
+  MessageOutlined,
+  LogoutOutlined
+} from '@ant-design/icons-vue';
 import { useUserStore } from '@/store/user';
 import { useWordStudyStore, type WordList } from '@/store/wordStudy';
 import { useThemeStore } from '@/store/theme';
@@ -78,7 +103,12 @@ export default defineComponent({
     DownOutlined,
     BellOutlined,
     BulbOutlined,
-    BulbFilled
+    BulbFilled,
+    FormOutlined,
+    LinkOutlined,
+    UserOutlined,
+    MessageOutlined,
+    LogoutOutlined
   },
   setup() {
     const router = useRouter();
