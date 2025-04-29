@@ -14,9 +14,9 @@
         class="register-form"
         :rules="rules"
       >
-        <a-form-item name="username">
+        <a-form-item name="userAccount">
           <a-input 
-            v-model:value="registerForm.username" 
+            v-model:value="registerForm.userAccount" 
             placeholder="用户名" 
             size="large"
           >
@@ -62,7 +62,7 @@
           </a-input-password>
         </a-form-item>
 
-        <a-form-item name="captcha" :rules="[{ required: true, message: '请输入验证码' }]">
+        <a-form-item name="captchaCode" :rules="[{ required: true, message: '请输入验证码' }]">
           <div class="captcha-container">
             <a-input 
               v-model:value="registerForm.captchaCode" 
@@ -82,8 +82,8 @@
           </div>
         </a-form-item>
 
-        <a-form-item name="agreement">
-          <a-checkbox v-model:value="registerForm.agreement">
+        <a-form-item name="agreement" :rules="[{ required: true, message: '请阅读并同意服务条款和隐私政策' }]">
+          <a-checkbox v-model:checked="registerForm.agreement">
             我已阅读并同意<a>服务条款</a>和<a>隐私政策</a>
           </a-checkbox>
         </a-form-item>
@@ -127,7 +127,7 @@ const router = useRouter();
 const userStore = useUserStore();
 
 const registerForm = reactive({
-  username: '',
+  userAccount: '',
   email: '',
   password: '',
   confirmPassword: '',
@@ -164,7 +164,7 @@ onMounted(() => {
 });
 
 const rules = {
-  username: [
+  userAccount: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
     { min: 3, max: 20, message: '用户名长度应为3-20个字符', trigger: 'blur' }
   ],
@@ -191,43 +191,44 @@ const rules = {
       trigger: 'blur'
     }
   ],
-  captcha: [
+  captchaCode: [
     { required: true, message: '请输入验证码', trigger: 'blur' }
   ],
   agreement: [
-    {
-      validator: (rule: any, value: boolean) => {
-        if (!value) {
-          return Promise.reject('请阅读并同意服务条款和隐私政策');
-        }
-        return Promise.resolve();
-      },
-      trigger: 'change'
+    { 
+      required: true, 
+      message: '请阅读并同意服务条款和隐私政策',
+      transform: () => registerForm.agreement, 
+      type: 'boolean',
+      trigger: ['change', 'blur']
     }
   ]
 };
 
 const handleRegister = async () => {
+  // 检查协议是否勾选
+  if (!registerForm.agreement) {
+    message.error('请阅读并同意服务条款和隐私政策');
+    return;
+  }
+
   loading.value = true;
   try {
-    const userData = await register(
-      registerForm.username,
+    const success = await register(
+      registerForm.userAccount,
       registerForm.email,
       registerForm.password,
       registerForm.captchaKey,
       registerForm.captchaCode
     );
     
-    userStore.setToken(userData.token);
-    userStore.setUserInfo({
-      id: userData.id,
-      username: userData.username,
-      email: userData.email,
-      avatar: userData.avatar
-    });
-    
-    message.success('注册成功');
-    router.push('/home');
+    if (success) {
+      message.success('注册成功，请登录');
+      router.push('/login');
+    } else {
+      message.error('注册失败，请重试');
+      refreshCaptcha();
+    }
   } catch (error: any) {
     message.error(error.message || '注册失败，请重试');
     // 注册失败时刷新验证码

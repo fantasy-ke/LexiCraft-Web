@@ -45,18 +45,15 @@ export const login = async (userAccount: string, passWord: string, captchaKey?: 
 
 // 用户注册
 export const register = async (
-  username: string, 
+  userAccount: string, 
   email: string, 
   password: string, 
   captchaKey?: string, 
   captchaCode?: string
-): Promise<UserData> => {
-  // 模拟网络请求延迟
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
+): Promise<boolean> => {
   // 创建注册数据
   const registerData: RegisterParams = {
-    username,
+    userAccount,
     email,
     password
   };
@@ -67,19 +64,14 @@ export const register = async (
     registerData.captchaCode = captchaCode;
   }
 
-  // 实际项目中应该调用API
-  // return api.post<UserData>('/auth/register', registerData);
-  
-  // 模拟注册
-  const userData: UserData = {
-    id: Date.now().toString(),
-    username,
-    email,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    token: 'user-token-' + Date.now()
-  };
-  
-  return userData;
+  try {
+    // 调用实际API
+    const response = await api.post<boolean>('/authorize/Register', registerData);
+    return response.data
+  } catch (error) {
+    console.error('注册失败:', error);
+    throw error;
+  }
 };
 
 // GitHub登录

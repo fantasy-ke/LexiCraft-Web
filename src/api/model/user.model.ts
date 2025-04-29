@@ -35,12 +35,13 @@ export interface LoginResponse {
  * 注册请求参数
  */
 export interface RegisterParams {
-  username: string;
-  email: string;
+  userAccount: string;
   password: string;
+  email: string;
   captchaKey?: string;
   captchaCode?: string;
 }
+
 
 /**
  * 用户信息响应
