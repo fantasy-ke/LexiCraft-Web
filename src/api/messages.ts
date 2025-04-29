@@ -1,26 +1,13 @@
 import api from './index';
-
-export interface Announcement {
-  id: string;
-  title: string;
-  content: string;
-  time: number;
-  read: boolean;
-}
-
-export interface MessageSender {
-  id: string;
-  name: string;
-  avatar: string;
-}
-
-export interface Message {
-  id: string;
-  sender: MessageSender;
-  content: string;
-  time: number;
-  read: boolean;
-}
+import type { 
+  Announcement, 
+  Message,
+  MessageSender,
+  AnnouncementsResponse,
+  MessagesResponse,
+  UnreadCountResponse
+} from './model/message.model';
+import type { ApiResponse } from './model/common.model';
 
 // 获取系统公告
 export const getAnnouncements = async (): Promise<Announcement[]> => {

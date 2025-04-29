@@ -62,6 +62,26 @@
           </a-input-password>
         </a-form-item>
 
+        <a-form-item name="captcha" :rules="[{ required: true, message: '请输入验证码' }]">
+          <div class="captcha-container">
+            <a-input 
+              v-model:value="registerForm.captchaCode" 
+              placeholder="验证码" 
+              size="large"
+            >
+              <template #prefix>
+                <safety-certificate-outlined />
+              </template>
+            </a-input>
+            <div class="captcha-image" @click="refreshCaptcha">
+              <img v-if="captchaImage" :src="captchaImage" alt="验证码" />
+              <div v-else class="captcha-loading">
+                <a-spin />
+              </div>
+            </div>
+          </div>
+        </a-form-item>
+
         <a-form-item name="agreement">
           <a-checkbox v-model:value="registerForm.agreement">
             我已阅读并同意<a>服务条款</a>和<a>隐私政策</a>
@@ -89,11 +109,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { UserOutlined, MailOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons-vue';
+import { 
+  UserOutlined, 
+  MailOutlined, 
+  LockOutlined, 
+  SafetyOutlined,
+  SafetyCertificateOutlined 
+} from '@ant-design/icons-vue';
 import { register } from '@/api/user';
+import { getCaptchaCode } from '@/api/verification';
 import { useUserStore } from '@/store/user';
 
 const router = useRouter();
@@ -104,10 +131,37 @@ const registerForm = reactive({
   email: '',
   password: '',
   confirmPassword: '',
-  agreement: false
+  agreement: false,
+  captchaKey: '',
+  captchaCode: ''
 });
 
 const loading = ref(false);
+const captchaImage = ref('');
+const captchaLoading = ref(false);
+
+// 获取验证码
+const refreshCaptcha = async () => {
+  captchaLoading.value = true;
+  try {
+    const res = await getCaptchaCode();
+    if (res.status && res.data) {
+      registerForm.captchaKey = res.data.key;
+      captchaImage.value = res.data.code;
+    } else {
+      message.error(res.message || '获取验证码失败');
+    }
+  } catch (error: any) {
+    message.error(error.message || '获取验证码失败');
+  } finally {
+    captchaLoading.value = false;
+  }
+};
+
+// 页面加载时获取验证码
+onMounted(() => {
+  refreshCaptcha();
+});
 
 const rules = {
   username: [
@@ -137,6 +191,9 @@ const rules = {
       trigger: 'blur'
     }
   ],
+  captcha: [
+    { required: true, message: '请输入验证码', trigger: 'blur' }
+  ],
   agreement: [
     {
       validator: (rule: any, value: boolean) => {
@@ -156,7 +213,9 @@ const handleRegister = async () => {
     const userData = await register(
       registerForm.username,
       registerForm.email,
-      registerForm.password
+      registerForm.password,
+      registerForm.captchaKey,
+      registerForm.captchaCode
     );
     
     userStore.setToken(userData.token);
@@ -171,6 +230,8 @@ const handleRegister = async () => {
     router.push('/home');
   } catch (error: any) {
     message.error(error.message || '注册失败，请重试');
+    // 注册失败时刷新验证码
+    refreshCaptcha();
   } finally {
     loading.value = false;
   }
@@ -179,4 +240,33 @@ const handleRegister = async () => {
 
 <style lang="scss" scoped>
 @use '@/styles/views/RegisterView.scss';
+
+.captcha-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .captcha-image {
+    width: 120px;
+    height: 40px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .captcha-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      background-color: #f0f0f0;
+    }
+  }
+}
 </style> 

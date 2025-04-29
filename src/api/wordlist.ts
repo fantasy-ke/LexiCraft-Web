@@ -1,5 +1,5 @@
 import api from './index';
-import type { WordList } from '../store/wordStudy';
+import type { WordList, Word } from './model/wordlist.model';
 import cet4WordList from '../assets/wordlists/cet4.json';
 import ieltsWordList from '../assets/wordlists/ielts.json';
 

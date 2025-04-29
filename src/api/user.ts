@@ -1,34 +1,77 @@
 import api from './index';
+import type { LoginParams, RegisterParams, UserData, UserResponse, LoginResponse } from './model/user.model';
 
 // 用户登录
-export const login = async (username: string, password: string) => {
-  // 模拟网络请求延迟
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  // 模拟服务器验证
-  if (username === 'demo' && password === 'password') {
-    const userData = {
-      id: '1',
-      username: 'demo',
-      email: 'demo@example.com',
-      avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-      token: 'demo-token-' + Date.now()
-    };
-    
-    return userData;
+export const login = async (userAccount: string, passWord: string, captchaKey?: string, captchaCode?: string): Promise<UserData> => {
+  // 创建请求数据
+  const loginData: LoginParams = {
+    userAccount,
+    passWord
+  };
+
+  // 如果提供了验证码信息，添加到请求中
+  if (captchaKey && captchaCode) {
+    loginData.captchaKey = captchaKey;
+    loginData.captchaCode = captchaCode;
   }
-  
-  // 返回错误
-  throw new Error('用户名或密码错误');
+
+  try {
+    // 调用实际API
+    const response = await api.post<LoginResponse>('/authorize/Login', loginData);
+    
+    // 保存token和refreshToken到本地存储
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
+    
+    if (response.data.refreshToken) {
+      localStorage.setItem('refreshToken', response.data.refreshToken);
+    }
+    
+    // 获取用户信息
+    const userInfo = await getUserInfo();
+    
+    // 返回完整的用户信息，包括token和refreshToken
+    return {
+      ...userInfo,
+      token: response.data.token,
+      refreshToken: response.data.refreshToken
+    };
+  } catch (error) {
+    console.error('登录失败:', error);
+    throw error;
+  }
 };
 
 // 用户注册
-export const register = async (username: string, email: string, password: string) => {
+export const register = async (
+  username: string, 
+  email: string, 
+  password: string, 
+  captchaKey?: string, 
+  captchaCode?: string
+): Promise<UserData> => {
   // 模拟网络请求延迟
   await new Promise(resolve => setTimeout(resolve, 1000));
   
+  // 创建注册数据
+  const registerData: RegisterParams = {
+    username,
+    email,
+    password
+  };
+
+  // 如果提供了验证码信息，添加到请求中
+  if (captchaKey && captchaCode) {
+    registerData.captchaKey = captchaKey;
+    registerData.captchaCode = captchaCode;
+  }
+
+  // 实际项目中应该调用API
+  // return api.post<UserData>('/auth/register', registerData);
+  
   // 模拟注册
-  const userData = {
+  const userData: UserData = {
     id: Date.now().toString(),
     username,
     email,
@@ -40,12 +83,12 @@ export const register = async (username: string, email: string, password: string
 };
 
 // GitHub登录
-export const githubLogin = async (code: string) => {
+export const githubLogin = async (code: string): Promise<UserData> => {
   // 模拟网络请求延迟
   await new Promise(resolve => setTimeout(resolve, 1000));
   
   // 模拟GitHub登录
-  const userData = {
+  const userData: UserData = {
     id: 'github-123',
     username: 'github_user',
     email: 'github@example.com',
@@ -57,12 +100,12 @@ export const githubLogin = async (code: string) => {
 };
 
 // Gitee登录
-export const giteeLogin = async (code: string) => {
+export const giteeLogin = async (code: string): Promise<UserData> => {
   // 模拟网络请求延迟
   await new Promise(resolve => setTimeout(resolve, 1000));
   
   // 模拟Gitee登录
-  const userData = {
+  const userData: UserData = {
     id: 'gitee-123',
     username: 'gitee_user',
     email: 'gitee@example.com',
@@ -74,27 +117,29 @@ export const giteeLogin = async (code: string) => {
 };
 
 // 获取用户信息
-export const getUserInfo = async () => {
-  // 模拟网络请求延迟
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  // 模拟获取用户信息
-  return {
-    id: '1',
-    username: 'demo',
-    email: 'demo@example.com',
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-  };
+export const getUserInfo = async (): Promise<UserData> => {
+  try {
+    // 调用实际API获取用户信息
+    const response = await api.get<UserData>('/user/UserInfo');
+    return response.data;
+  } catch (error) {
+    console.error('获取用户信息失败:', error);
+    throw error;
+  }
 };
 
 // 更新用户信息
-export const updateUserInfo = async (data: any) => {
+export const updateUserInfo = async (data: Partial<UserData>): Promise<UserData> => {
   // 模拟网络请求延迟
   await new Promise(resolve => setTimeout(resolve, 1000));
   
   // 模拟更新用户信息
   return {
     ...data,
+    id: data.id || '1',
+    username: data.username || 'demo',
+    email: data.email || 'demo@example.com',
+    avatar: data.avatar || 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     updatedAt: new Date().toISOString()
-  };
+  } as UserData;
 }; 
