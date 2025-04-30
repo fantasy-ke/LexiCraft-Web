@@ -22,7 +22,7 @@
                   </div>
                 </div>
               </a-upload>
-              <h2 class="username">{{ userInfo.username }}</h2>
+              <h2 class="username">{{ userInfo.userName }}</h2>
               <p class="email">{{ userInfo.email }}</p>
             </div>
             
@@ -63,16 +63,16 @@
                   @finish="handleUpdate"
                   layout="vertical"
                 >
-                  <a-form-item label="用户名" name="username">
-                    <a-input v-model="formState.username" />
+                  <a-form-item label="用户名" name="userName">
+                    <a-input v-model:value="formState.userName" />
                   </a-form-item>
                   
                   <a-form-item label="邮箱" name="email">
-                    <a-input v-model="formState.email" />
+                    <a-input v-model:value="formState.email" />
                   </a-form-item>
                   
                   <a-form-item label="自我介绍" name="bio">
-                    <a-textarea v-model="formState.bio" :rows="4" />
+                    <a-textarea v-model:value="formState.bio" :rows="4" />
                   </a-form-item>
                   
                   <a-form-item>
@@ -117,17 +117,30 @@
                 <a-divider />
                 
                 <h3>学习进度</h3>
-                <a-progress
-                  :percent="(typingProgress.masteredWords / typingProgress.totalWords) * 100"
-                  status="active"
-                  :format="() => `拼写模式: ${typingProgress.masteredWords}/${typingProgress.totalWords}`"
-                  style="margin-bottom: 16px"
-                />
-                <a-progress
-                  :percent="(connectProgress.masteredWords / connectProgress.totalWords) * 100"
-                  status="active"
-                  :format="() => `连连看模式: ${connectProgress.masteredWords}/${connectProgress.totalWords}`"
-                />
+                <div class="progress-item">
+                  <div class="progress-header">
+                    <span>拼写模式</span>
+                    <span>{{ typingProgress.masteredWords }}/{{ typingProgress.totalWords }}</span>
+                  </div>
+                  <a-progress
+                    :percent="(typingProgress.masteredWords / typingProgress.totalWords) * 100"
+                    status="active"
+                    :format="(percent: number) => `${percent.toFixed(0)}%`"
+                    style="margin-bottom: 12px"
+                  />
+                </div>
+                
+                <div class="progress-item">
+                  <div class="progress-header">
+                    <span>连连看模式</span>
+                    <span>{{ connectProgress.masteredWords }}/{{ connectProgress.totalWords }}</span>
+                  </div>
+                  <a-progress
+                    :percent="(connectProgress.masteredWords / connectProgress.totalWords) * 100"
+                    status="active"
+                    :format="(percent: number) => `${percent.toFixed(0)}%`"
+                  />
+                </div>
               </a-card>
             </a-tab-pane>
             
@@ -273,7 +286,7 @@ const averageAccuracy = computed(() => {
 
 // 表单状态
 const formState = reactive({
-  username: userInfo.value.username || '',
+  userName: userInfo.value.userName || '',
   email: userInfo.value.email || '',
   bio: userInfo.value.bio || ''
 });
@@ -354,7 +367,7 @@ const handleUpdate = async () => {
   try {
     // 调用API更新用户信息
     const updatedInfo = await updateUserInfo({
-      username: formState.username,
+      userName: formState.userName,
       email: formState.email,
       bio: formState.bio
     });
@@ -495,4 +508,24 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 @use '@/styles/views/ProfileView.scss';
+
+.progress-item {
+  margin-bottom: 16px;
+  
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+    
+    span:first-child {
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: 500;
+    }
+    
+    span:last-child {
+      color: rgba(0, 0, 0, 0.65);
+    }
+  }
+}
 </style>

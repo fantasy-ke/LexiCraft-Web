@@ -81,8 +81,8 @@ export const githubLogin = async (code: string): Promise<UserData> => {
   
   // 模拟GitHub登录
   const userData: UserData = {
-    id: 'github-123',
-    username: 'github_user',
+    userId: 'github-123',
+    userName: 'github_user',
     email: 'github@example.com',
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     token: 'github-token-' + Date.now()
@@ -98,8 +98,8 @@ export const giteeLogin = async (code: string): Promise<UserData> => {
   
   // 模拟Gitee登录
   const userData: UserData = {
-    id: 'gitee-123',
-    username: 'gitee_user',
+    userId: 'gitee-123',
+    userName: 'gitee_user',
     email: 'gitee@example.com',
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     token: 'gitee-token-' + Date.now()
@@ -128,8 +128,8 @@ export const updateUserInfo = async (data: Partial<UserData>): Promise<UserData>
   // 模拟更新用户信息
   return {
     ...data,
-    id: data.id || '1',
-    username: data.username || 'demo',
+    userId: data.userId || '1',
+    userName: data.userName || 'demo',
     email: data.email || 'demo@example.com',
     avatar: data.avatar || 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     updatedAt: new Date().toISOString()

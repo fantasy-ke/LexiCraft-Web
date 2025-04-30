@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
       }
     },
     server: {
-      port: 5273,
+      port: 5272,
       open: true,
       cors: true,
       // 设置为true允许接收任何源的请求

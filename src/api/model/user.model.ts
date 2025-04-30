@@ -4,10 +4,11 @@ import type { ApiResponse } from './common.model';
  * 用户数据类型
  */
 export interface UserData {
-  id: string;
-  username: string;
+  userId: string;
+  userName: string;
   email: string;
   avatar: string;
+  bio?: string;
   token?: string;
   refreshToken?: string;
   updatedAt?: string;

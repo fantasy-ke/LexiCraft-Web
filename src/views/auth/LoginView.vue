@@ -192,8 +192,8 @@ const handleLogin = async () => {
     
     userStore.setToken(userData.token || "", userData.refreshToken || "");
     userStore.setUserInfo({
-      id: userData.id,
-      username: userData.username,
+      id: userData.userId,
+      userName: userData.userName,
       email: userData.email,
       avatar: userData.avatar
     });

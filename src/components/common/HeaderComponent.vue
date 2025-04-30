@@ -39,7 +39,7 @@
       <a-dropdown>
         <a class="ant-dropdown-link" @click.prevent>
           <a-avatar :src="userInfo.avatar || '/default-avatar.png'" />
-          <span class="username">{{ userInfo.username || '用户' }}</span>
+          <span class="username">{{ userInfo.userName || '用户' }}</span>
         </a>
         <template #overlay>
           <a-menu>
